@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+header{
+  padding: 10px;
+  text-align: center;
+}

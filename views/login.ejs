@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <header>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+    <h1>Login to Account</h1>
+    <a href="/" class="btn btn-primary my-2">Home</a>
+    <hr>
+  </header>
   <body>
     <form action="/login" method="post">
-        <% for (var i in login){%>
-            Username: <input type="text" name="loginUsername[]" value="<%= login[i].username %>" /><br><br>
-            Password: <input type="text" name="loginPassword[]" value="<%= login[i].password %>" /><br><br>
-            <input type="submit" value="accept"/><br><br><hr>
-        <%} %>
+            Username: <input type="text" /><br><br>
+            Password: <input type="text" /><br><br>
+            <input type="submit" value="Login"/><br><br><hr>
     </form>
   </body>
 </html>
