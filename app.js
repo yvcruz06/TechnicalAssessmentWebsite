@@ -28,16 +28,16 @@ mongoose.set('useFindAndModify', false);
  * This will be later updated with the new cluster in mongoDB
 */
 // Connect to mongodb
-const uri = 'mongodb+srv://Esoto1290:CSTwebstore1900@cst438.vwxeq.mongodb.net/WebStore?retryWrites=true&w=majority';
-mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then((result) =>
-    app.listen(process.env.PORT || 3000, function () {
-      console.log('Express server is running...');
-      console.log(this.address().port);
-    })
-  )
-  .catch((err) => console.log(err));
+// const uri = 'mongodb+srv://Esoto1290:CSTwebstore1900@cst438.vwxeq.mongodb.net/WebStore?retryWrites=true&w=majority';
+// mongoose
+//   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then((result) =>
+//     app.listen(process.env.PORT || 3000, function () {
+//       console.log('Express server is running...');
+//       console.log(this.address().port);
+//     })
+//   )
+//   .catch((err) => console.log(err));
 
 
 var indexRouter = require('./routes/index');
