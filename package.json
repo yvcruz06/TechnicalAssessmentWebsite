@@ -1,16 +1,32 @@
 {
   "name": "technicalassessmentwebsite",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yvcruz06/TechnicalAssessmentWebsite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yvcruz06/TechnicalAssessmentWebsite/issues"
+  },
+  "homepage": "https://github.com/yvcruz06/TechnicalAssessmentWebsite#readme",
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
+    "bluebird": "^3.7.2",
+    "cookie-parser": "^1.4.5",
+    "debug": "^4.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "http-errors": "^1.8.0",
+    "method-override": "^3.0.0",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.12",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.6"
   }
 }
