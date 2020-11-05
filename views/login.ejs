@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <form action="/login" method="post">
+        <% for (var i in login){%>
+            Username: <input type="text" name="loginUsername[]" value="<%= login[i].username %>" /><br><br>
+            Club Type: <input type="text" name="clubtype[]" value="<%= clubreq[i].type %>" /><br><br>
+            <input type="submit" value="accept"/><br><br><hr>
+        <%} %>
+    </form>
+    <h1><%= title %></h1>
+    <p><%= title %> to your account</p>
+    <p>Username: </p>
+    <
+  </body>
+</html>
