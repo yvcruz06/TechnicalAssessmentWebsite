@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <form action="/login" method="post">
+        <% for (var i in login){%>
+            Username: <input type="text" name="loginUsername[]" value="<%= login[i].username %>" /><br><br>
+            Password: <input type="text" name="loginPassword[]" value="<%= login[i].password %>" /><br><br>
+            <input type="submit" value="accept"/><br><br><hr>
+        <%} %>
+    </form>
+  </body>
+</html>
