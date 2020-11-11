@@ -23,25 +23,26 @@ app.use(methodOverride('_method'));
 // Avoid deprecated warning for findByIdAndUpdate()
 mongoose.set('useFindAndModify', false);
 
+// Models from our Database
+const User = require('./models/user');
 
-/** 
- * This will be later updated with the new cluster in mongoDB
-*/
 // Connect to mongodb
-// const uri = 'mongodb+srv://Esoto1290:CSTwebstore1900@cst438.vwxeq.mongodb.net/WebStore?retryWrites=true&w=majority';
-// mongoose
-//   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then((result) =>
-//     app.listen(process.env.PORT || 3000, function () {
-//       console.log('Express server is running...');
-//       console.log(this.address().port);
-//     })
-//   )
-//   .catch((err) => console.log(err));
+const uri = 'mongodb+srv://Esoto1290:CSTwebstore1900@cst438.vwxeq.mongodb.net/TechnicalAssistant?retryWrites=true&w=majority';
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) =>
+    app.listen(process.env.PORT || 3000, function () {
+      console.log('Express server is running...');
+      console.log(this.address().port);
+    })
+  )
+  .catch((err) => console.log(err));
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
+var signupRouter = require('./routes/signup');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -51,6 +52,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/login', loginRouter);
+app.use('/signup', signupRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
