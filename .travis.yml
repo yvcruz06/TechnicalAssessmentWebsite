@@ -1,11 +1,5 @@
 language: node_js
-git:
-  depth:  3
 node_js:
-  - "node"
+  - "14.15.0"
+  - node
 install:  npm install
-script:
-  - npm test
-cache:
-  directories:
-    - node_modules
