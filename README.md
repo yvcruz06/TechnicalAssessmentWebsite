@@ -1,3 +1,4 @@
 # Technical Assessment Website
 
-Test Website: https://github.com/yvcruz06/TechnicalAssessmentWebsite
+Github: https://github.com/yvcruz06/TechnicalAssessmentWebsite
+Websiter: https://tech-asmnt.herokuapp.com/
