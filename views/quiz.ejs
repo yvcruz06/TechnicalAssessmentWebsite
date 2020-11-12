@@ -12,15 +12,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </head>
 <body class="text-center bg-dark">
-    <h1 class="jumbotron bg-dark text-white"> Java quiz </h1>
-    <!-- Example Quiz -->
+    <h1 class="jumbotron bg-dark text-white"> <%= Questions[0].language %> Quiz</h1>
 
     <div class="container bg-secondary">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <!-- load first question here -->
-                <% //console.log(Questions) %>
-                <div class="carousel-item active">
+                <% console.log(Questions) %>
+                <div class="carousel-item active" style="margin-top: 2em;">
                     <div class="row justify-content-center">
                         <div class="col-6">
                             <h2>
@@ -30,27 +29,22 @@
                     </div>
                     <div class="row justify-content-center" style="margin-bottom: 2em; margin-top: 2em;">
                         <div class="col-4">
-                            <select class="form-control">
+                            <!-- load choices-->
+                            <select class="form-control" id='q<%= 1 %>'>
+                                <option selected > Select... </option>
+                                <% for(var i = 0; i < Questions[0].choices.length; i++) { %>
                                 <option>
-                                    1
+                                    <%= Questions[0].choices[i] %>
                                 </option>
-                                <option>
-                                    2
-                                </option>
-                                <option>
-                                    3
-                                </option>
+                                <% } %>
                             </select>
-
-
                         </div>
                     </div>
                 </div>
 
                 <!-- Load the rest of the qustions -->
                 <% for(var i = 1; i < Questions.length; i++) { %>
-
-                <div class="carousel-item">
+                <div class="carousel-item" style="margin-top: 2em;">
                     <div class="row justify-content-center">
                         <div class="col-6">
                             <h2>
@@ -58,12 +52,25 @@
                             </h2>
                         </div>
                     </div>
+
+                    <div class="row justify-content-center" style="margin-bottom: 2em; margin-top: 2em;">
+                        <div class="col-4">
+                            <!-- load choices-->
+                            <select class="form-control" id='q<%= i + 1 %>'>
+                                <option selected > Select... </option>
+                                <% for(var j = 0; j < Questions[0].choices.length; j++) { %>
+                                <option>
+                                    <%= Questions[i].choices[j] %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <% } %>
 
             </div>
-
 
             <a class="carousel-control-prev " href="#carouselExampleControls" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -88,8 +95,11 @@
 
             $('button').click(function() {
                 var counter = 0
+                console.log($('#q1').val())
 
-
+                if($('#q1').val() == '<%= Questions[0].answer %>') {
+                    console.log('Correct')
+                }
 
             })
 
