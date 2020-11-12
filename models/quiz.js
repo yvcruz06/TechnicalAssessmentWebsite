@@ -1,8 +1,7 @@
-const { attempt } = require('bluebird')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const question = new Schema({
+const quiz = new Schema({
     topic: {
         type: String,
         required: true
@@ -45,5 +44,5 @@ const question = new Schema({
 
 }, { timestamps: true })
 
-const Question = mongoose.model('Question', question)
-module.exports = Question
+const Quiz = mongoose.model('Quiz', quiz)
+module.exports = Quiz

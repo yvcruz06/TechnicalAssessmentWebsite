@@ -5,28 +5,29 @@ var router = express.Router();
 // quiz model
 const Quiz = require('../models/quiz')
 
-/* GET users listing. */
+// it would look like an error if its just
+// localhost:3000/quiz
+// do it like ...:3000/quiz?C++
+// or /quiz?Java
 router.get('/', function(req, res) {
 
   var topic = req._parsedOriginalUrl.query
+  if(topic == null) {
+    console.log('error...')
+    res.redirect('/')
+  } else {
+    Quiz.find({language: topic}).then((result => {
+      // console.log(result)
 
-  Quiz.find({language: topic}).then((result => {
-    // console.log(result)
-    res.render('quiz', {
-      Title: 'Quiz!',
-      Questions: result
+      res.render('quiz', {
+        Title: 'Quiz!',
+        Questions: result
+      })
+    })).catch((error) => {
+      console.log(error)
     })
 
-  }))
-
-
-
-
-  // res.render('quiz', {
-  //   Title: 'Quiz!'
-  // })
-
-
+  }
 });
 
 router.get('/grade', function(req, res) {
