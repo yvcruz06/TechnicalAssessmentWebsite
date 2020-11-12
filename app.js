@@ -42,6 +42,7 @@ mongoose
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
+var quiz_router = require('./routes/quiz')
 var signupRouter = require('./routes/signup');
 
 app.use(logger('dev'));
@@ -52,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/quiz', quiz_router)
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 
