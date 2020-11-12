@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // Model from our Database
-const Question = require('./../models/question');
+const Quiz = require('./../models/quiz');
 
 /* GET admin create questions page. */
 router.get('/', (req, res) => {
