@@ -17,7 +17,6 @@ router.get('/', function(req, res) {
     res.redirect('/')
   } else {
     Quiz.find({language: topic}).then((result => {
-      // console.log(result)
 
       res.render('quiz', {
         Title: 'Quiz!',
@@ -30,8 +29,52 @@ router.get('/', function(req, res) {
   }
 });
 
+
 router.get('/grade', function(req, res) {
-  res.send('something is working here')
+
+  let score = 0
+  var feedback = []
+  var user_answers = req.query.answers
+
+  Quiz.find({language: req.query.topic }).then((result => {
+    // find answers that were correctly answered
+    var correct_index = []
+    for(var i = 0; i < result.length; i++) {
+      if(user_answers[i] === result[i].answer) {
+        correct_index.push(i)
+        score++
+      } else {
+        feedback.push(result[i].explanation)
+      }
+    }
+
+    // update questions attempt and correct
+    Quiz.findOneAndUpdate({ question: result[i].question }).then((result) => {
+
+    })
+
+
+
+    res.send({
+      'score': score,
+      'feedback': feedback,
+      'correct_index': correct_index
+    })
+
+    // result.forEach((answer) => {
+    //   console.log(answer.answer)
+    // })
+
+  })).catch((error) => {
+    console.log(error)
+  })
+
+
+
+
+
+
+
 
 })
 
