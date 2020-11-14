@@ -15,7 +15,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Middleware & Static Files
+app.engine('html', require('ejs').renderFile);
 app.use(express.static('public')); // access images, css, js
+app.use(express.static('css'));
 app.use(express.urlencoded({ extended: true }));
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
