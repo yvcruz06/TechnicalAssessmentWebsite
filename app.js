@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const bodyParser = require("body-parser");
 const app = express();
 
 // Promises
@@ -15,7 +16,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Middleware & Static Files
+app.engine('html', require('ejs').renderFile);
 app.use(express.static('public')); // access images, css, js
+app.use(express.static('css'));
 app.use(express.urlencoded({ extended: true }));
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
