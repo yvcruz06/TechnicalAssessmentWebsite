@@ -1,5 +1,6 @@
 const { attempt } = require('bluebird');
 var express = require('express');
+const { ConnectionBase } = require('mongoose');
 var router = express.Router();
 
 // quiz model
@@ -16,8 +17,7 @@ router.get('/', function(req, res) {
     console.log('error...')
     res.redirect('/')
   } else {
-    Quiz.find({language: topic}).then((result => {
-      // console.log(result)
+    Quiz.find({language: topic }).then((result => {
 
       res.render('quiz', {
         Title: 'Quiz!',
@@ -30,8 +30,61 @@ router.get('/', function(req, res) {
   }
 });
 
+
 router.get('/grade', function(req, res) {
-  res.send('something is working here')
+
+  let score = 0
+  var feedback = []
+  var user_answers = req.query.answers
+  var topic = req.query.topic
+
+  Quiz.find({ language: topic }).then((result => {
+
+    for(var i = 0; i < result.length; i++) {
+      const filter = {
+        question: result[i].question
+      }
+
+      var attempts = result[i].attempts + 1
+
+      if(user_answers[i] === result[i].answer) {
+        score++
+        feedback.push(' ')
+
+        var correct = result[i].correct + 1
+
+        const update = {
+          attempts: attempts,
+          correct: correct
+        }
+
+        Quiz.findOneAndUpdate(filter, update, { new: true }).then((result => {
+          console.log('in update one, correct question ' + result)
+        })).catch((error => {
+          console.log(error)
+        }))
+
+      } else {
+        feedback.push(result[i].explanation)
+
+        const update = {
+          attempts: attempts
+        }
+
+        Quiz.findOneAndUpdate(filter, update, { new: true }).then((result => {
+          console.log('in update one, incorect question: ' + result)
+        }))
+      }
+    }
+
+    res.send({
+      'score': score,
+      'feedback': feedback,
+    })
+
+  })).catch((error) => {
+    console.log(error)
+  })
 
 })
 
@@ -72,6 +125,7 @@ const new_question = new Quiz({
   choices: ['', '', '', ''],
   answer: '',
   attempts: 0,
-  correct: 0
+  correct: 0,
+  explanation: ''
 })
 */
