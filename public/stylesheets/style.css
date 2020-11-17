@@ -80,6 +80,15 @@ body {
   color: white;
 }
 
+#loginSection {
+  text-align: center;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
 #timer {
   font-size: 20px;
   background-color: #ea4f4c;
