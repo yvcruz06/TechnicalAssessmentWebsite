@@ -14,8 +14,12 @@
 <body class="text-center bg-dark">
     <h1 class="jumbotron bg-dark text-white"> <%= Questions[0].language %> Quiz</h1>
 
-    <div class="row justify-content-left">
-        sample
+    <div class="row align-items-start" style="margin-bottom: 2em;">
+        <div class="col-4">
+            <h4 class="text-white">
+                <%= Questions.length %> Questions
+            </h4>
+        </div>
     </div>
     <!-- carousel questions-->
     <div class="container bg-secondary">
@@ -82,7 +86,6 @@
                         </div>
                     </div>
                 </div>
-
                 <% } %>
             </div>
 
@@ -142,7 +145,6 @@
                         for(var i = 0; i < result.feedback.length; i++) {
                             $(`#feedback${i + 1}`).html(result.feedback[i])
                         }
-
                     }
                 })
             })

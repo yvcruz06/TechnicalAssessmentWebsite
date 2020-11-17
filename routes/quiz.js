@@ -13,7 +13,6 @@ const Quiz = require('../models/quiz')
 router.get('/', function(req, res) {
 
   var topic = req._parsedOriginalUrl.query
-  console.log(topic)
   if(topic == null) {
     console.log('error...')
     res.redirect('/')
@@ -40,15 +39,41 @@ router.get('/grade', function(req, res) {
   var topic = req.query.topic
 
   Quiz.find({ language: topic }).then((result => {
-    // find answers that were correctly answered
-    var correct_index = []
+
     for(var i = 0; i < result.length; i++) {
+      const filter = {
+        question: result[i].question
+      }
+
+      var attempts = result[i].attempts + 1
+
       if(user_answers[i] === result[i].answer) {
-        correct_index.push(i)
         score++
         feedback.push(' ')
+
+        var correct = result[i].correct + 1
+
+        const update = {
+          attempts: attempts,
+          correct: correct
+        }
+
+        Quiz.findOneAndUpdate(filter, update, { new: true }).then((result => {
+          console.log('in update one, correct question ' + result)
+        })).catch((error => {
+          console.log(error)
+        }))
+
       } else {
         feedback.push(result[i].explanation)
+
+        const update = {
+          attempts: attempts
+        }
+
+        Quiz.findOneAndUpdate(filter, update, { new: true }).then((result => {
+          console.log('in update one, incorect question: ' + result)
+        }))
       }
     }
 
@@ -57,29 +82,9 @@ router.get('/grade', function(req, res) {
       'feedback': feedback,
     })
 
-    // for(var i = 0; i < correct_index.length; i++) {
-    //   Quiz.findOne({ question: result[correct_index[i]] }).then((result => {
-    //     console.log('updating question')
-    //     console.log(result)
-    //   })).catch((error => {
-    //     console.log(error)
-    //   }))
-    // }
-
-    // result.forEach((answer) => {
-    //   console.log(answer.answer)
-    // })
-
   })).catch((error) => {
     console.log(error)
   })
-
-
-
-
-
-
-
 
 })
 
@@ -120,6 +125,7 @@ const new_question = new Quiz({
   choices: ['', '', '', ''],
   answer: '',
   attempts: 0,
-  correct: 0
+  correct: 0,
+  explanation: ''
 })
 */
