@@ -27,6 +27,11 @@
             <div class="carousel-inner">
                 <!-- load first question here -->
                 <div class="carousel-item active" style="margin-top: 2em;">
+                    <div class="row align-items-start" style="margin-left: 2em;">
+                        <h5>
+                            Topic: <%= Questions[0].topic %>
+                        </h5>
+                    </div>
                     <div class="row justify-content-center">
                         <div class="col-6">
                             <h2>
@@ -58,6 +63,11 @@
                 <!-- Load the rest of the qustions -->
                 <% for(var i = 1; i < Questions.length; i++) { %>
                 <div class="carousel-item" style="margin-top: 2em;">
+                    <div class="row align-items-start" style="margin-left: 2em;">
+                        <h5>
+                            Topic: <%= Questions[i].topic %>
+                        </h5>
+                    </div>
                     <div class="row justify-content-center">
                         <div class="col-6">
                             <h2>
