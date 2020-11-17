@@ -14,6 +14,10 @@
 <body class="text-center bg-dark">
     <h1 class="jumbotron bg-dark text-white"> <%= Questions[0].language %> Quiz</h1>
 
+    <div class="row justify-content-left">
+        sample
+    </div>
+    <!-- carousel questions-->
     <div class="container bg-secondary">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
@@ -39,6 +43,12 @@
                             </select>
                         </div>
                     </div>
+                    <div class="row justify-content-center">
+                        <div class="col-6">
+                            <h5 id='feedback<%= 1 %>' class="text-info">
+                            </h5>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Load the rest of the qustions -->
@@ -57,12 +67,18 @@
                             <!-- load choices-->
                             <select class="form-control" id='q<%= i + 1 %>'>
                                 <option selected > Select... </option>
-                                <% for(var j = 0; j < Questions[0].choices.length; j++) { %>
+                                <% for(var j = 0; j < Questions[i].choices.length; j++) { %>
                                 <option>
                                     <%= Questions[i].choices[j] %>
                                 </option>
                                 <% } %>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-6">
+                            <h5 id='feedback<%= i + 1 %>' class="text-info">
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -81,7 +97,9 @@
         </div>
     </div>
 
-    <button type="button" class="btn btn-info" style="margin-top: 3em;">Submit</button>
+    <button id='submit' type="button" class="btn btn-info" style="margin-top: 3em;">Submit</button>
+    <button id='home' type="button" class="btn btn-light" style="margin-top: 3em;"> Go Home </button>
+
 
     <h3 id='score' style="margin-top: 2em;">
     </h3>
@@ -94,12 +112,17 @@
                 wrap: false
             })
 
+            $('#home').click(function() {
+                location.href = '/'
+            })
 
-            $('button').click(function() {
+            $('#submit').click(function() {
+
+                // uncomment
+                $(this).prop('disabled', true)
 
                 var answer_array = []
                 for(var i = 0; i < '<%= Questions.length %>'; i++) {
-                    console.log($('#q' + (i + 1)).val())
                     answer_array.push($('#q' + (i + 1)).val())
                 }
 
@@ -113,11 +136,12 @@
                     },
 
                     success: function(result, status) {
-                        console.log('success!')
-                        console.log(result.correct_index)
-
-
+                        var correct_index = result.correct_index
                         $('#score').html('score: ' + result.score)
+
+                        for(var i = 0; i < result.feedback.length; i++) {
+                            $(`#feedback${i + 1}`).html(result.feedback[i])
+                        }
 
                     }
                 })

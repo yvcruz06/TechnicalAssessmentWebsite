@@ -1,5 +1,6 @@
 const { attempt } = require('bluebird');
 var express = require('express');
+const { ConnectionBase } = require('mongoose');
 var router = express.Router();
 
 // quiz model
@@ -12,11 +13,12 @@ const Quiz = require('../models/quiz')
 router.get('/', function(req, res) {
 
   var topic = req._parsedOriginalUrl.query
+  console.log(topic)
   if(topic == null) {
     console.log('error...')
     res.redirect('/')
   } else {
-    Quiz.find({language: topic}).then((result => {
+    Quiz.find({language: topic }).then((result => {
 
       res.render('quiz', {
         Title: 'Quiz!',
@@ -35,31 +37,34 @@ router.get('/grade', function(req, res) {
   let score = 0
   var feedback = []
   var user_answers = req.query.answers
+  var topic = req.query.topic
 
-  Quiz.find({language: req.query.topic }).then((result => {
+  Quiz.find({ language: topic }).then((result => {
     // find answers that were correctly answered
     var correct_index = []
     for(var i = 0; i < result.length; i++) {
       if(user_answers[i] === result[i].answer) {
         correct_index.push(i)
         score++
+        feedback.push(' ')
       } else {
         feedback.push(result[i].explanation)
       }
     }
 
-    // update questions attempt and correct
-    Quiz.findOneAndUpdate({ question: result[i].question }).then((result) => {
-
-    })
-
-
-
     res.send({
       'score': score,
       'feedback': feedback,
-      'correct_index': correct_index
     })
+
+    // for(var i = 0; i < correct_index.length; i++) {
+    //   Quiz.findOne({ question: result[correct_index[i]] }).then((result => {
+    //     console.log('updating question')
+    //     console.log(result)
+    //   })).catch((error => {
+    //     console.log(error)
+    //   }))
+    // }
 
     // result.forEach((answer) => {
     //   console.log(answer.answer)
