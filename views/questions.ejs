@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <a href="/login" class="btn btn-primary my-2">Login</a>
+        <a href="/signup" class="btn btn-primary my-2">Create Account</a>
+    </head>
+
+    <body>
+        <div>
+            <h1>Question Builder</h1>
+            <p>Create a Question!</p>
+        </div>
+        <form>
+            <p>
+                <label>Select the Language</label>
+                <select id="language" required>
+                    <option selected disabled value="">Please select</option>
+                    <option value="C++">C++</option>
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                    <option value="Javascript">Javascript</option>
+                </select>
+            </p>
+            
+            <p>
+                <label>Select the Topic</label>
+                <select id="topic" required>
+                    <option selected disabled value="">Please select</option>
+                    <option value="Algorithms">Algorithms</option>
+                    <option value="Loops">Loops</option>
+                    <option value="Classes">Classes</option>
+                    <option value="Methods">Methods</option>
+                </select>
+            </p>
+            
+            <label>Please enter the question below!</label>
+            <br>
+            <div>
+                <textarea rows="5" cols="60" name="description" required placeholder="Enter question here..."></textarea>
+            </div>
+            <br>
+
+            <label>Please enter the answer explanation!</label>
+            <br>
+            <div>
+                <textarea rows="5" cols="60" name="explanation" required placeholder="Enter explanation here..."></textarea>
+            </div>
+            <br>
+
+            <label>Enter answer A!</label>
+            <br>
+            <div>
+                <textarea rows="1" cols="60" name="choiceA" required placeholder="Enter answer A..."></textarea>
+            </div>
+            <br>
+
+            <label>Enter answer B!</label>
+            <br>
+            <div>
+                <textarea rows="1" cols="60" name="choiceB" required placeholder="Enter answer B..."></textarea>
+            </div>
+            <br>
+
+            <label>Enter answer C!</label>
+            <br>
+            <div>
+                <textarea rows="1" cols="60" name="choiceC" required placeholder="Enter answer C..."></textarea>
+            </div>
+            <br>
+
+            <label>Enter answer D!</label>
+            <br>
+            <div>
+                <textarea rows="1" cols="60" name="choiceD" required placeholder="Enter answer D..."></textarea>
+            </div>
+
+            <p>Please select the answer choice:</p>
+            <input type="radio" id="A" name="answer" value="A" required>
+            <label for="A">Answer A</label><br>
+
+            <input type="radio" id="B" name="answer" value="B">
+            <label for="B">Answer B</label><br>
+            
+            <input type="radio" id="C" name="answer" value="C">
+            <label for="C">Answer C</label><br>
+
+            <input type="radio" id="D" name="answer" value="D">
+            <label for="D">Answer D</label><br><br>
+
+            <div>
+                <input type = "submit" value = "submit" />
+            </div>
+        </form>
+
+    </body>
+
+</html>
