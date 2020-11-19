@@ -27,6 +27,11 @@ const quiz = new Schema({
         required: true
     },
 
+    explanation: {
+        type: String,
+        require: true
+    },
+
     attempts: {
         type: Number,
         required: true
@@ -35,11 +40,6 @@ const quiz = new Schema({
     correct: {
         type: Number,
         required: true
-    },
-
-    explanation: {
-        type: String,
-        require: true
     }
 
 }, { timestamps: true })
