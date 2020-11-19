@@ -1,19 +1,33 @@
-<!DOCTYPE html>
-<html>
-  <header>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <h1>Sign Up for a New Account</h1>
-    <a href="/" class="btn btn-primary my-2">Home</a>
-    <hr>
-  </header>
+<%- include('partials/header.ejs') %>
+
   <body>
-    <form action="/signup" method="post">
-            First Name: <input type="text" /><br><br>
-            Last Name: <input type="text" /><br><br>
-            Username: <input type="text" /><br><br>
-            Password: <input type="text" /><br><br>
-            <input type="submit" value="SignUp"/><br><br><hr>
+    <h1>Sign Up for a New Account</h1>
+    
+    <form action='/signup' method='POST'>
+      <label for = "fname">First Name: <br></label>
+      <input type = "text" id = "fname" name = "fname" placeholder='First Name' required> 
+      <br>
+      <label for = "lname">Last Name: <br></label>
+      <input type = "text" id = "lname" name = "lname" placeholder='Last Name' required> 
+      <br>
+      <label for = "newUsername">Username: <br></label>
+      <input type = "text" id = "newUsername" name = "newUsername" placeholder='New Username' pattern = ".{5,}" required> 
+      <br>
+      <label for = "newPassword">Password: <br></label>
+      <input type = "password" id = "newPassword" name = "newPassword" placeholder = "New Password" pattern = ".{8,}" required>
+      <br>
+      <label for = "confirmPassword">Re Enter Password: <br></label> 
+      <input type = "password" id = "confirmPassword" name = "confirmPassword" placeholder = "Re Enter Password" pattern = ".{8,}" required>
+      <br>
+      <button>Sign Up!</button>
+      <br>
+      <%if(signUpError){%>
+          <h1 class="centerText" style="color:red;">Username Taken!</h1>
+          <%}%>
+      <%if(dontMatch){%>
+          <h1 class="centerText" style="color:red;">Passwords Do Not Match! Re Enter Info</h1>
+          <%}%>
     </form>
   </body>
-</html>
+
+<%- include('partials/footer.ejs') %> 
