@@ -98,6 +98,15 @@ body {
   margin-left: -100px;
 }
 
+#mainTimeSection{
+  text-align: center;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
 #timer {
   font-size: 20px;
   background-color: #ea4f4c;
