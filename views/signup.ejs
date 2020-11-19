@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html>
-  <header>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <h1>Sign Up for a New Account</h1>
-    <a href="/" class="btn btn-primary my-2">Home</a>
-    <hr>
-  </header>
+<%- include('partials/header.ejs') %>
   <body>
-    <form action="/signup" method="post">
-            First Name: <input type="text" /><br><br>
-            Last Name: <input type="text" /><br><br>
-            Username: <input type="text" /><br><br>
-            Password: <input type="text" /><br><br>
-            <input type="submit" value="SignUp"/><br><br><hr>
-    </form>
+    <div id="signupSection">
+      <h1>Create Account</h1>
+      <form action="/signup" method="post">
+        First Name: <input type="text" /><br><br>
+        Last Name: <input type="text" /><br><br>
+        Username: <input type="text" /><br><br>
+        Password: <input type="text" /><br><br>
+        <input type="submit" value="SignUp"/><br><br><hr>
+      </form>
+    </div>
+    
   </body>
-</html>
+  <%- include('partials/footer.ejs') %> 
