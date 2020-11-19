@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+
 router.get('/', function(req, res, next) {
-  //res.render('signup', {signUpError: false, dontMatch : false});
+  res.render('signup', {signUpError: false, dontMatch : false});
+});
+
+router.post('/', function(req, res, next) {
   
   var fname = req.body.fname;
   var lname = req.body.lname;
