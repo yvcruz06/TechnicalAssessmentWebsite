@@ -43,6 +43,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var quiz_router = require('./routes/quiz')
+var result_router = require('./routes/result')
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
 
@@ -55,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/quiz', quiz_router)
+app.use('/result', result_router)
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/question', questionsRoutes);
