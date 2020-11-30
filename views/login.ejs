@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <header>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <h1>Login to Account</h1>
-    <a href="/" class="btn btn-primary my-2">Home</a>
-    <hr>
-  </header>
+<%- include('partials/header.ejs') %>
   <body>
-    <form action="/login" method="post">
+    <div id="loginSection">
+      <h1>Login</h1>
+      <form action="/login" method="post">
             Username: <input type="text" /><br><br>
             Password: <input type="text" /><br><br>
             <input type="submit" value="Login"/><br><br><hr>
     </form>
+    </div>
+    
   </body>
-</html>
+<%- include('partials/footer.ejs') %> 
