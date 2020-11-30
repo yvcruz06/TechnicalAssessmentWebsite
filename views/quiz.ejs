@@ -120,7 +120,7 @@
     <script>
         $(document).ready(function() {
             $('.carousel').carousel({
-                interval: 360000,
+                interval: 3600000,
                 pause: 'hover',
                 wrap: false
             })
@@ -145,12 +145,10 @@
                     dataType: 'json',
                     data: {
                         'answers': answer_array,
-                        'topic': '<%= Questions[0].language %>'
                     },
 
                     success: function(result, status) {
-                        var correct_index = result.correct_index
-                        $('#score').html('score: ' + result.score)
+                        $('#score').html(`Result: ${result.score}%`)
 
                         for(var i = 0; i < result.feedback.length; i++) {
                             $(`#feedback${i + 1}`).html(result.feedback[i])
@@ -161,4 +159,4 @@
         })
     </script>
 </body>
-</html>
+<%- include('partials/footer.ejs') %>
