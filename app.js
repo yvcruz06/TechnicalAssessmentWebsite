@@ -5,7 +5,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require("body-parser");
+var session = require('express-session');
 const app = express();
+
+//Session
+app.use(session({
+  secret: "Crazy Green",
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 5
+  }
+}));
+
 
 // Promises
 const Promise = require('bluebird');
@@ -43,8 +55,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var quiz_router = require('./routes/quiz')
+var result_router = require('./routes/result')
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -54,7 +68,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/quiz', quiz_router)
+app.use('/quiz', quiz_router);
+app.use('/result', result_router);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/question', questionsRoutes);
@@ -76,3 +91,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+

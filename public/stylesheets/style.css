@@ -73,11 +73,38 @@ body {
 
 .start-btn {
   font-family: "Roboto", sans-serif;
-  background-color: #ea4f4c; 
+  background-color: #6d0019; 
   border: 2px solid black;
   border-radius: 30px; 
   font-size: 30px;
-  color: white;
+  color: rgb(223, 223, 223);
+}
+
+#loginSection {
+  text-align: center;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
+#signupSection{
+  text-align: center;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
+#mainTimeSection{
+  text-align: center;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
 }
 
 #timer {
@@ -160,3 +187,16 @@ tr:nth-child(even) {
   text-decoration: none;
   cursor: pointer;
 }
+.input-label {
+  font-weight: bold;
+  color: black;
+  font-size: 20px;
+}
+
+.input-box {
+  background-color: #3f3f3f;
+  color: white;
+  border-color: #3f3f3f;
+  font-size: 20px;
+}
+

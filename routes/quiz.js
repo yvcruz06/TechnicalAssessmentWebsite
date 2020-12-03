@@ -5,6 +5,7 @@ var router = express.Router();
 
 // quiz model
 const Quiz = require('../models/quiz')
+var grade_quiz = null
 
 // it would look like an error if its just
 // localhost:3000/quiz
@@ -13,19 +14,24 @@ const Quiz = require('../models/quiz')
 router.get('/', function(req, res) {
 
   var topic = req._parsedOriginalUrl.query
+  var query = {
+    language: topic
+  }
+
   if(topic == null) {
     console.log('error...')
     res.redirect('/')
   } else {
-    Quiz.find({language: topic }).then((result => {
-
+    Quiz.aggregate([
+      { $match: query},
+      { $sample: { size: 10 }}
+    ]).then((result => {
+      grade_quiz = result
       res.render('quiz', {
         Title: 'Quiz!',
         Questions: result
       })
-    })).catch((error) => {
-      console.log(error)
-    })
+    }))
 
   }
 });
@@ -36,22 +42,20 @@ router.get('/grade', function(req, res) {
   let score = 0
   var feedback = []
   var user_answers = req.query.answers
-  var topic = req.query.topic
 
-  Quiz.find({ language: topic }).then((result => {
-
-    for(var i = 0; i < result.length; i++) {
+  if(grade_quiz) {
+    for(var i = 0; i < grade_quiz.length; i++) {
       const filter = {
-        question: result[i].question
+        question: grade_quiz[i].question
       }
 
-      var attempts = result[i].attempts + 1
+      var attempts = grade_quiz[i].attempts + 1
 
-      if(user_answers[i] === result[i].answer) {
+      if(user_answers[i] === grade_quiz[i].answer) {
         score++
         feedback.push(' ')
 
-        var correct = result[i].correct + 1
+        var correct = grade_quiz[i].correct + 1
 
         const update = {
           attempts: attempts,
@@ -59,33 +63,34 @@ router.get('/grade', function(req, res) {
         }
 
         Quiz.findOneAndUpdate(filter, update, { new: true }).then((result => {
-          console.log('in update one, correct question ' + result)
+          // console.log('in update one, correct question ' + result)
         })).catch((error => {
           console.log(error)
         }))
-
       } else {
-        feedback.push(result[i].explanation)
+        feedback.push(grade_quiz[i].explanation)
 
         const update = {
           attempts: attempts
         }
 
         Quiz.findOneAndUpdate(filter, update, { new: true }).then((result => {
-          console.log('in update one, incorect question: ' + result)
+          // console.log('in update one, incorect question: ' + result)
+        })).catch((error => {
+          console.log(error)
         }))
       }
     }
+    score = ((score / grade_quiz.length) * 100).toFixed(2)
 
     res.send({
-      'score': score,
-      'feedback': feedback,
+      score: score,
+      feedback: feedback
     })
-
-  })).catch((error) => {
-    console.log(error)
-  })
-
+  } else {
+    console.log('something wrong herer')
+    res.redirect('/')
+  }
 })
 
 // adding?
@@ -114,18 +119,3 @@ router.get('/add_new', function(req, res) {
   })
 })
 module.exports = router;
-
-/*
-new question format
-
-const new_question = new Quiz({
-  topic: '',
-  language: '',
-  question: '',
-  choices: ['', '', '', ''],
-  answer: '',
-  attempts: 0,
-  correct: 0,
-  explanation: ''
-})
-*/
