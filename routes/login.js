@@ -1,4 +1,5 @@
 var express = require('express');
+const app = require('../app');
 var router = express.Router();
 
 // Model from our Database
@@ -11,45 +12,39 @@ router.get('/', function(req, res, next) {
 
 router.post('/', async(req, res) => {
   
-  var user = req.body.newUsername;
-  var pass = req.body.newPassword;
+  var user = req.body.usernameInput;
+  var pass = req.body.passwordInput;
 
-  if (user == confirmPass) {
+  const loginExist = await getLogin(req, user, pass);
+  console.log(loginExist);
+  if (loginExist) {
     //access DB to see if username is taken
-      const userExist = await getUser(user);
-
-      if(userExist == null){      //user is not in db
-        // save user to db, redirect to login
-        newUser.save()
-        .then((result) => {
-          res.redirect('/login');
-        })
-        .catch((error) => {
-          console.log(error);
-        });                
-      }else {  //user exists   
-        res.render('signUp.ejs', {signUpError: true, dontMatch: false});
-      }       
-  }else { //passwords do not match
-      res.render('signUp.ejs', {signUpError: false, dontMatch: true});
-  }
+    console.log(req.app.locals.currentUserID);
+    res.redirect('/');   
+  }else {  
+    //user does not exists   
+    res.render('login', {loginError: true});
+  } 
 });
 
 //function check db if user exists
-async function getUser(user) {
-  let list = [];
-  await User.findOne({username: user})
+async function getLogin(req, user, pass) {
+  let found = false;
+  await User.findOne({username: user, password: pass})
   .then((result) => {
-    if (result != null) {
-      list = result;
-    }
-    else {
-      list = null;
+    console.log(result);
+    console.log(user, pass);
+    if (result == null) {
+      found = false;
+    } else {
+      req.app.locals.currentUserID = result.id;
+      req.session.authenticated = true;
+      found = true;
     }
   }).catch((error) => {
     console.log(error);
   });
-  return list;
+  return found;
 }
 
 module.exports = router;
