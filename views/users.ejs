@@ -1,0 +1,20 @@
+<%- include('partials/header.ejs') %>
+    <body>
+        <h1>Account Information</h1><br>
+        <h2>Firstname Lastname</h2>
+        <h3>Username</h3>
+        <h2>Change Password</h2>
+        <p>Password must be 8 characters or greater</p>
+        <form action="/" method="post">
+            <div class="input-label">
+                <label for="updatePass">New Password: <br></label>
+                <input class="input-box" type="password" id="updatePass" name="updatePass" placeholder="New Password" pattern=".{8,}" required>
+                <br>
+                <label for="confirmNew">Re Enter New Password: <br></label> 
+                <input class="input-box" type="password" id="confirmNew" name="confirmNew" placeholder="Re Enter Password" pattern=".{8,}" required>
+                <br>
+            </div><br>
+            <button class="start-btn">Update Password</button>
+        </form>
+    </body>    
+<%- include('partials/footer.ejs') %> 

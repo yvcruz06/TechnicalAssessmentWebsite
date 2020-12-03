@@ -39,10 +39,10 @@ router.post('/', async(req, res) => {
           console.log(error);
         });                
       }else {  //user exists   
-        res.render('signUp.ejs', {signUpError: true, dontMatch: false});
+        res.render('signup', {signUpError: true, dontMatch: false});
       }       
   }else { //passwords do not match
-      res.render('signUp.ejs', {signUpError: false, dontMatch: true});
+      res.render('signup', {signUpError: false, dontMatch: true});
   }
 
 });
