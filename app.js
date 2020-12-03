@@ -5,7 +5,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require("body-parser");
+var session = require('express-session');
 const app = express();
+
+//Session
+app.use(session({
+  secret: "Crazy Green",
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 5
+  }
+}));
+
 
 // Promises
 const Promise = require('bluebird');
