@@ -6,7 +6,7 @@ const User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('login', { title: 'Log In' });
+  res.render('login', {loginError: false});
 });
 
 router.post('/', async(req, res) => {
@@ -14,8 +14,25 @@ router.post('/', async(req, res) => {
   var user = req.body.newUsername;
   var pass = req.body.newPassword;
 
-  
+  if (user == confirmPass) {
+    //access DB to see if username is taken
+      const userExist = await getUser(user);
 
+      if(userExist == null){      //user is not in db
+        // save user to db, redirect to login
+        newUser.save()
+        .then((result) => {
+          res.redirect('/login');
+        })
+        .catch((error) => {
+          console.log(error);
+        });                
+      }else {  //user exists   
+        res.render('signUp.ejs', {signUpError: true, dontMatch: false});
+      }       
+  }else { //passwords do not match
+      res.render('signUp.ejs', {signUpError: false, dontMatch: true});
+  }
 });
 
 //function check db if user exists
