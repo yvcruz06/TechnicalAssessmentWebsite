@@ -14,11 +14,14 @@ router.post('/', async(req, res) => {
   var user = req.body.newUsername;
   var pass = req.body.newPassword;
 
+  
+  
   if (user == confirmPass) {
     //access DB to see if username is taken
+      
       const userExist = await getUser(user);
 
-      if(userExist == null){      //user is not in db
+      if(userExist != null){      //user is in db
         // save user to db, redirect to login
         newUser.save()
         .then((result) => {
@@ -36,9 +39,10 @@ router.post('/', async(req, res) => {
 });
 
 //function check db if user exists
-async function getUser(user) {
+async function getUser(user, pass) {
   let list = [];
   await User.findOne({username: user})
+  await User.findOne({password: pass})
   .then((result) => {
     if (result != null) {
       list = result;
