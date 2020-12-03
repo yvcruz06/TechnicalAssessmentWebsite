@@ -8,6 +8,7 @@ const Quiz = require('../models/quiz')
 const Result = require('../models/result')
 var grade_quiz = null
 
+
 // it would look like an error if its just
 // localhost:3000/quiz
 // do it like ...:3000/quiz?C++
@@ -15,6 +16,7 @@ var grade_quiz = null
 router.get('/', function(req, res) {
 
   console.log('Grade Quiz = ' + grade_quiz)
+  console.log(req.app.locals.temp)
 
   var topic = req._parsedOriginalUrl.query
   var query = {
@@ -123,8 +125,6 @@ router.get('/grade', function(req, res) {
     res.redirect('/')
   }
 })
-
-
 
 // adding?
 router.get('/add_new', function(req, res) {
