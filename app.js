@@ -11,12 +11,21 @@ const app = express();
 //Session
 app.use(session({
   secret: "Crazy Green",
+  rolling: true,
   saveUninitialized: false,
   resave: false,
   cookie: {
     maxAge: 1000 * 60 * 5
   }
 }));
+
+function activeUser(req) {
+  if (!req.session.authenticated) {
+    app.locals.currentUserID = "";
+  }
+} // Checks for user inactivity
+
+app.locals.currentUserID = "";
 
 
 // Promises
@@ -54,8 +63,8 @@ mongoose
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
-var quiz_router = require('./routes/quiz')
-var result_router = require('./routes/result')
+var quiz_router = require('./routes/quiz');
+var result_router = require('./routes/result');
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
 
