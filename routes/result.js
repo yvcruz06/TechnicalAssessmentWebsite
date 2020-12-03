@@ -3,8 +3,21 @@ var router = express.Router();
 
 const Result = require('../models/result')
 
+// temp
+const username = 'username'
+
 router.get('/', function(req, res) {
-    res.send('working on results')
+
+
+
+
+
+
+
+
+
+    res.render('result', { Title: 'Results'})
+
 
 })
 
