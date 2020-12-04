@@ -5,10 +5,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require("body-parser");
-var session = require('express-session');
 const app = express();
 
-//Session
+// Session for Logged in Users
+var session = require('express-session');
+app.locals.currentUserID = "";
+
 app.use(session({
   secret: "Crazy Green",
   rolling: true,
@@ -18,15 +20,6 @@ app.use(session({
     maxAge: 1000 * 60 * 5
   }
 }));
-
-function activeUser(req) {
-  if (!req.session.authenticated) {
-    app.locals.currentUserID = "";
-  }
-} // Checks for user inactivity
-
-app.locals.currentUserID = "";
-
 
 // Promises
 const Promise = require('bluebird');
@@ -60,6 +53,14 @@ mongoose
   .catch((err) => console.log(err));
 
 
+// Some of these don't make sense. Look over it later
+app.use(logger('dev'));
+app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
@@ -67,13 +68,6 @@ var quiz_router = require('./routes/quiz');
 var result_router = require('./routes/result');
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
-
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -100,4 +94,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-

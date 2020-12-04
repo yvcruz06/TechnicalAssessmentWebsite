@@ -1,5 +1,4 @@
 var express = require('express');
-const app = require('../app');
 var router = express.Router();
 
 // Model from our Database
@@ -10,16 +9,14 @@ router.get('/', function(req, res, next) {
   res.render('login', {loginError: false});
 });
 
-router.post('/', async(req, res) => {
-  
+router.post('/', async (req, res) => {  
   var user = req.body.usernameInput;
   var pass = req.body.passwordInput;
 
-  const loginExist = await getLogin(req, user, pass);
-  console.log(loginExist);
-  if (loginExist) {
+  const userExist = await getUser(req, user, pass);
+
+  if (userExist) {
     //access DB to see if username is taken
-    console.log(req.app.locals.currentUserID);
     res.redirect('/');   
   }else {  
     //user does not exists   
@@ -27,24 +24,22 @@ router.post('/', async(req, res) => {
   } 
 });
 
-//function check db if user exists
-async function getLogin(req, user, pass) {
-  let found = false;
+// Check db if user exists
+async function getUser(req, user, pass) {
+  let userFound = false;
+  
   await User.findOne({username: user, password: pass})
   .then((result) => {
-    console.log(result);
-    console.log(user, pass);
-    if (result == null) {
-      found = false;
-    } else {
+    if (result != null) {
       req.app.locals.currentUserID = result.id;
       req.session.authenticated = true;
-      found = true;
+      userFound = true;
     }
   }).catch((error) => {
     console.log(error);
   });
-  return found;
+
+  return userFound;
 }
 
 module.exports = router;
