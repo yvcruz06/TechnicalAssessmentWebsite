@@ -5,13 +5,18 @@ var router = express.Router();
 
 // quiz model
 const Quiz = require('../models/quiz')
+const Result = require('../models/result')
 var grade_quiz = null
+
 
 // it would look like an error if its just
 // localhost:3000/quiz
 // do it like ...:3000/quiz?C++
 // or /quiz?Java
 router.get('/', function(req, res) {
+
+  console.log('Grade Quiz = ' + grade_quiz)
+  console.log(req.app.locals.temp)
 
   var topic = req._parsedOriginalUrl.query
   var query = {
@@ -44,6 +49,7 @@ router.get('/grade', function(req, res) {
   var user_answers = req.query.answers
 
   if(grade_quiz) {
+
     for(var i = 0; i < grade_quiz.length; i++) {
       const filter = {
         question: grade_quiz[i].question
@@ -87,6 +93,33 @@ router.get('/grade', function(req, res) {
       score: score,
       feedback: feedback
     })
+
+    // get results ready here
+    // user_id hard-coded for now
+    let user_id = 'username'
+    let language = grade_quiz[0].language
+
+    var temp = []
+    grade_quiz.forEach(element => {
+      temp.push(element.topic)
+    });
+
+    const topics = [...new Set(temp)]
+
+    const new_result = new Result({
+      user_id: user_id,
+      language: language,
+      topic: topics,
+      score: score
+    })
+
+    new_result.save().then((result) => {
+      console.log(result)
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    grade_quiz = null
   } else {
     console.log('something wrong herer')
     res.redirect('/')
