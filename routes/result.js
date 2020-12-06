@@ -7,19 +7,8 @@ const Result = require('../models/result')
 const username = 'username'
 
 router.get('/', function(req, res) {
-
-
-
-
-
-
-
-
-
-
-    res.render('result', { Title: 'Results'})
-
-
+    res.send('working on results')
+    // minor chanhes to test new branch
 })
 
 module.exports = router

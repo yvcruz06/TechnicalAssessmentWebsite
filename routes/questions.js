@@ -79,6 +79,7 @@ router.get('/retrieve/:id', (req, res) => {
  */
 async function getAllQuestions() {
   let list = [];
+  
   await Quiz.find({}, '-__v -createdAt -updatedAt -choices -answer -explanation')
   .exec()
   .then((result) => {
@@ -89,6 +90,7 @@ async function getAllQuestions() {
   }).catch((error) => {
     console.log(error);
   });
+  
   return list;
 }
 
@@ -98,6 +100,7 @@ async function getAllQuestions() {
  */
 async function getTopics() {
   let list = [];
+  
   await Quiz.find({}, '-_id topic')
   .distinct('topic')
   .exec()
@@ -108,6 +111,7 @@ async function getTopics() {
   }).catch((error) => {
     console.log(error);
   });
+  
   return list;
 }
 
@@ -117,6 +121,7 @@ async function getTopics() {
  */
 async function getLanguages() {
   let list = [];
+  
   await Quiz.find({}, '-_id language')
   .distinct('language')
   .exec()
@@ -127,6 +132,7 @@ async function getLanguages() {
   }).catch((error) => {
     console.log(error);
   });
+ 
   return list;
 }
 
