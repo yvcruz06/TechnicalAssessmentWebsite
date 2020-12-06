@@ -95,8 +95,7 @@ router.get('/grade', function(req, res) {
     })
 
     // get results ready here
-    // user_id hard-coded for now
-    let user_id = 'username'
+    let user_id = req.app.locals.currentUserID
     let language = grade_quiz[0].language
 
     var temp = []
