@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const application = require('../app');
+const active = require("./activeUser");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  application.activeUser(req);
+router.get('/', (req, res) =>  {
+  active(req);
   res.render('index');
 });
 
