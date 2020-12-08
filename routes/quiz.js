@@ -12,6 +12,7 @@ var grade_quiz = null
 // do it like ...:3000/quiz?C++
 // or /quiz?Java
 router.get('/', function(req, res) {
+  activeUser(req);
 
   var topic = req._parsedOriginalUrl.query
   var query = {
