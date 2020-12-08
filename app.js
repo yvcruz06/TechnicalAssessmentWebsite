@@ -7,6 +7,20 @@ var logger = require('morgan');
 const bodyParser = require("body-parser");
 const app = express();
 
+// Session for Logged in Users
+var session = require('express-session');
+app.locals.currentUserID = "";
+
+app.use(session({
+  secret: "Crazy Green",
+  rolling: true,
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 5
+  }
+}));
+
 // Promises
 const Promise = require('bluebird');
 mongoose.Promise = Promise;
@@ -39,20 +53,21 @@ mongoose
   .catch((err) => console.log(err));
 
 
+// Some of these don't make sense. Look over it later
+app.use(logger('dev'));
+app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
-var quiz_router = require('./routes/quiz')
-var result_router = require('./routes/result')
+var quiz_router = require('./routes/quiz');
+var result_router = require('./routes/result');
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
-
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -78,5 +93,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
 
+module.exports = app;

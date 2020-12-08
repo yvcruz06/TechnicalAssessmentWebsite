@@ -5,13 +5,22 @@ var router = express.Router();
 
 // quiz model
 const Quiz = require('../models/quiz')
+const Result = require('../models/result')
 var grade_quiz = null
+
 
 // it would look like an error if its just
 // localhost:3000/quiz
 // do it like ...:3000/quiz?C++
 // or /quiz?Java
 router.get('/', function(req, res) {
+  let active_user = req.app.locals.currentUserID
+  if(active_user) {
+    console.log('there is a user', active_user)
+  } else {
+    console.log('no current active user')
+    res.redirect('login')
+  }
 
   var topic = req._parsedOriginalUrl.query
   var query = {
@@ -32,8 +41,8 @@ router.get('/', function(req, res) {
         Questions: result
       })
     }))
-
   }
+  req.app.locals.currentUserID = active_user
 });
 
 
@@ -44,6 +53,7 @@ router.get('/grade', function(req, res) {
   var user_answers = req.query.answers
 
   if(grade_quiz) {
+
     for(var i = 0; i < grade_quiz.length; i++) {
       const filter = {
         question: grade_quiz[i].question
@@ -87,6 +97,32 @@ router.get('/grade', function(req, res) {
       score: score,
       feedback: feedback
     })
+
+    // get results ready here
+    let user_id = req.app.locals.currentUserID
+    let language = grade_quiz[0].language
+
+    var temp = []
+    grade_quiz.forEach(element => {
+      temp.push(element.topic)
+    });
+
+    const topics = [...new Set(temp)]
+
+    const new_result = new Result({
+      user_id: user_id,
+      language: language,
+      topic: topics,
+      score: score
+    })
+
+    new_result.save().then((result) => {
+      console.log('quiz saved in results')
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    grade_quiz = null
   } else {
     console.log('something wrong herer')
     res.redirect('/')

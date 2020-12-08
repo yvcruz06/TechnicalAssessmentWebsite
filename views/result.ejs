@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= Title %></title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <!-- jQuery and JS bundle w/ Popper.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+    <!-- Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+</head>
+<body class="text-center bg-dark">
+    <h3 style="margin-top: 1em;">
+        Result from previous attempted quizzes
+    </h3>
+    <div class="row justify-content-center" style="margin-top: 3em;">
+        <div class="col">
+            <canvas id="chart" width="300" height="100"></canvas>
+        </div>
+    </div>
+    <p style="margin-top: 2em;">
+        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Take Another Quiz
+        </button>
+        <button id='home' type="button" class="btn btn-primary"> Go Home </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body bg-dark">
+            <% for (let i = 0; i < options.length; i++) { %>
+            <button class="btn">
+                <a href="/quiz?<%= options[i ]%>" style="color: currentColor">
+                    <%- options[i] %>
+                </a>
+            </button>
+            <% } %>
+        </div>
+      </div>
+
+
+</body>
+<script>
+    $(document).ready(function() {
+
+        if('<%= options.length %>' < 1) {
+            console.log('something went wrong in EJS script')
+        }
+
+        $('#home').click(function() {
+            window.location.href = '/'
+        })
+
+        const label = '<%- Label %>'.split(',')
+        const data = '<%- Data %>'.split(',')
+        const language = '<%- Lang %>'.split(',')
+
+        var canvas = $('#chart')
+        var my_chart = new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: label,
+                datasets: [{
+                    label: 'Score',
+                    backgroundColor: "rgba(20,140,110, 0.2)",
+                    borderColor: "rgba(20,140,110, 1)",
+                    borderWidth: 2,
+                    hoverBackgroundColor: "rgba(20,140,110, 0.4)",
+                    hoverBorderColor: "rgba(20,140,110, 0.1)",
+                    data: data
+                }]
+            },
+            options : {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Score (out of 100)'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Type of Quizzes done'
+                        }
+                    }]
+                }
+            }
+        })
+
+        // function color() {
+        //     var r = Math.floor(Math.random() * 70);
+        //     var g = Math.floor(Math.random() * 255);
+        //     var b = Math.floor(Math.random() * 150);
+        //     return "rgba(" + r + "," + g + "," + b + ", 0.2)";
+        // }
+
+        // function poolColors(length) {
+        //     var pool = []
+        //     for(var i = 0; i < length; i++) {
+        //         pool.push(color())
+        //     }
+        //     return pool
+        // }
+
+        // function update(array, alpha) {
+        //     var updated_array = []
+        //     for(var i = 0; i < array.length; i++) {
+        //         var temp = array[i].split(' ')
+
+        //         temp[1] = temp[1].replace('0.2)', alpha.toString() + ')')
+        //         updated_array.push(temp.join())
+        //     }
+        //     console.log(updated_array)
+        //     return updated_array
+        // }
+    })
+</script>
+</html>

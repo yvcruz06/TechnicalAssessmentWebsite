@@ -5,8 +5,17 @@ var router = express.Router();
 const Quiz = require('../models/quiz');
 
 // TODO: List all the available pages.
-router.get('/', (req, res) => {
-  res.render('questions', { title: 'Sign Up' });
+router.get('/', async (req, res) => {
+  const questions = await getAllQuestions();
+
+  res.render('allQuestions', { 
+    Questions: questions 
+  });
+
+});
+
+router.delete('/delete/:id', async (req, res) => {
+  console.log(req.body);
 });
 
 // Create a question page.
@@ -15,7 +24,7 @@ router.get('/create', async (req, res) => {
   const languages = await getLanguages();
   const choices = ["A", "B", "C", "D"]
 
-  res.render('questions', { 
+  res.render('newQuestion', { 
     title: 'Sign Up',
     Choices: choices,
     CurrentTopics: topics,
@@ -59,12 +68,39 @@ router.post('/create/new', async (req, res) => {
 
 });
 
+router.get('/retrieve/:id', (req, res) => {
+  console.log("Hello there");
+  console.log(req.body);
+})
+
+/**
+ * Returns a list of unique topics based on all questions
+ * or an empty list
+ */
+async function getAllQuestions() {
+  let list = [];
+  
+  await Quiz.find({}, '-__v -createdAt -updatedAt -choices -answer -explanation')
+  .exec()
+  .then((result) => {
+    if (result != null) {
+      list = result;
+    }
+    // console.log(result);
+  }).catch((error) => {
+    console.log(error);
+  });
+  
+  return list;
+}
+
 /**
  * Returns a list of unique topics based on all questions
  * or an empty list
  */
 async function getTopics() {
   let list = [];
+  
   await Quiz.find({}, '-_id topic')
   .distinct('topic')
   .exec()
@@ -75,6 +111,7 @@ async function getTopics() {
   }).catch((error) => {
     console.log(error);
   });
+  
   return list;
 }
 
@@ -84,6 +121,7 @@ async function getTopics() {
  */
 async function getLanguages() {
   let list = [];
+  
   await Quiz.find({}, '-_id language')
   .distinct('language')
   .exec()
@@ -94,6 +132,7 @@ async function getLanguages() {
   }).catch((error) => {
     console.log(error);
   });
+ 
   return list;
 }
 

@@ -2,10 +2,14 @@
   <body>
     <div id="loginSection">
       <h1>Login</h1>
-      <form action="/login" method="post">
-            Username: <input type="text" /><br><br>
-            Password: <input type="text" /><br><br>
-            <input type="submit" value="Login"/><br><br><hr>
+      <form action="/login" method="POST">
+            Username: <input name = "usernameInput" type="text" class="input-box" id="usernameInput"/><br><br>
+            Password: <input name = "passwordInput" type="text" class="input-box" id="passwordInput"/><br><br>
+            <button class="start-btn">Log In!</button>
+            <br>
+            <%if(loginError){%>
+              <h1 class="centerText" style="color: #222;">Incorrect Username or Password</h1>
+              <%}%>
     </form>
     </div>
     
