@@ -1,11 +1,11 @@
 <%- include('partials/header.ejs') %>
     <body>
-        <h1>Account Information</h1><br>
+        <h1 style="color:rgb(194, 194, 194)">Account Information</h1><br>
         <h2>Firstname Lastname</h2>
-        <h3>Username</h3>
-        <h2>Change Password</h2>
+        <h3>Username</h3><br>
+        <h2>Change Password: </h2>
         <p>Password must be 8 characters or greater</p>
-        <form action="/" method="post">
+        <form action="/" method="POST">
             <div class="input-label">
                 <label for="updatePass">New Password: <br></label>
                 <input class="input-box" type="password" id="updatePass" name="updatePass" placeholder="New Password" pattern=".{8,}" required>
