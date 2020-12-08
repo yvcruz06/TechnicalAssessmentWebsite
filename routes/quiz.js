@@ -14,9 +14,13 @@ var grade_quiz = null
 // do it like ...:3000/quiz?C++
 // or /quiz?Java
 router.get('/', function(req, res) {
-
-  console.log('Grade Quiz = ' + grade_quiz)
-  console.log(req.app.locals.temp)
+  let active_user = req.app.locals.currentUserID
+  if(active_user) {
+    console.log('there is a user', active_user)
+  } else {
+    console.log('no current active user')
+    res.redirect('login')
+  }
 
   var topic = req._parsedOriginalUrl.query
   var query = {
@@ -37,7 +41,6 @@ router.get('/', function(req, res) {
         Questions: result
       })
     }))
-
   }
 });
 
@@ -113,7 +116,7 @@ router.get('/grade', function(req, res) {
     })
 
     new_result.save().then((result) => {
-      console.log(result)
+      console.log('quiz saved in results')
     }).catch((error) => {
       console.log(error)
     })
