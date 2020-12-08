@@ -14,6 +14,13 @@ var grade_quiz = null
 // do it like ...:3000/quiz?C++
 // or /quiz?Java
 router.get('/', function(req, res) {
+  let active_user = req.app.locals.currentUserID
+  if(active_user) {
+    console.log('there is a user', active_user)
+  } else {
+    console.log('no current active user')
+    res.redirect('login')
+  }
 
   activeUser(req);
   let active_user = req.app.locals.currentUserID
