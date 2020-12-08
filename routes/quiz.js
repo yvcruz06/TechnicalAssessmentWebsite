@@ -42,6 +42,7 @@ router.get('/', function(req, res) {
       })
     }))
   }
+  req.app.locals.currentUserID = active_user
 });
 
 

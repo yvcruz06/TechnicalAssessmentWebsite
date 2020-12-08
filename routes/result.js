@@ -6,7 +6,6 @@ const Quiz = require('../models/quiz');
 
 router.get('/', async function(req, res) {
     let current_user = req.app.locals.currentUserID
-
     let list = []
     await Quiz.find().then((result) => {
         result.forEach(element => {
@@ -15,8 +14,6 @@ router.get('/', async function(req, res) {
     })
     var options = [...new Set(list)]
 
-    // remove later
-    current_user = "5fc94bdf73e92401c8a2d747"
     if(current_user != '') {
         Result.find({ user_id: current_user }).then((result) => {
             var label = [], data = [], language = []
