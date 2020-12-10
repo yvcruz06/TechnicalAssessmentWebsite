@@ -6,7 +6,6 @@ const Quiz = require('../models/quiz');
 
 
 router.get('/', async function(req, res) {
-    activeUser(req);
     let current_user = req.app.locals.currentUserID
     let list = []
     await Quiz.find().then((result) => {
