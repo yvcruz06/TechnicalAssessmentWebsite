@@ -1,33 +1,46 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  if (/*logged in*/ true) {
-    //retrive user info from db
-    var user //login username
+const User = require('../models/user');
+var userInfo;
 
-    res.render('users');
+/* GET users listing. */
+router.get('/', async(req, res) => {
+  let current_user = req.app.locals.currentUserID;
+
+  if (current_user) {
+    userInfo = await getInfo(current_user);
+    res.render('users',{user: userInfo, update: false, passMatch: true});
   }
   else {
-    res.render('login');
+    res.render('login',{loginError: false});
   }
 });
 
 router.post('/', async(req, res) => { 
+  let current_user = req.app.locals.currentUserID;
+
   var updatePass = req.body.updatePass;
   var confirmNew = req.body.confirmNew;
 
-  if (updatePass == confirmNew) {
-    //update db
-    res.render('users'); //add message confirmation
+  if (current_user){
+    if (updatePass == confirmNew) {
+      await User.updateOne({_id: current_user},{$set: {password: updatePass}})
+      res.render('users',{user: userInfo, update: true, passMatch: true});
+    }
+    else {
+      res.render('users',{user: userInfo, update: false, passMatch: false});
+    }
   }
+  else {
+    res.render('login',{loginError: false});
+  }  
 });
 
-//function updates db
-async function updateUser(user) {
+//function finds user info in DB by using  ID
+async function getInfo(userId) {
   let list = [];
-  await User.findOne({username: user})
+  await User.findById(userId)
   .then((result) => {
     if (result != null) {
       list = result;
