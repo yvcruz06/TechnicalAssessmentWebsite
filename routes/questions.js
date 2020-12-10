@@ -6,6 +6,7 @@ const Quiz = require('../models/quiz');
 
 // TODO: List all the available pages.
 router.get('/', async (req, res) => {
+  activeUser(req);
   const questions = await getAllQuestions();
 
   res.render('allQuestions', { 
