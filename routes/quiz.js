@@ -14,35 +14,34 @@ var grade_quiz = null
 // do it like ...:3000/quiz?C++
 // or /quiz?Java
 router.get('/', function(req, res) {
-  let active_user = req.app.locals.currentUserID
-  if(active_user) {
-    console.log('there is a user', active_user)
+  let current_user = req.app.locals.currentUserID
+  if(current_user) {
+    console.log('there is a user', current_user)
+    var topic = req._parsedOriginalUrl.query
+    var query = {
+      language: topic
+    }
+
+    if(topic == null) {
+      console.log('error...')
+      res.redirect('/')
+    } else {
+      Quiz.aggregate([
+        { $match: query},
+        { $sample: { size: 8 }}
+      ]).then((result => {
+        grade_quiz = result
+        res.render('quiz', {
+          Title: 'Quiz!',
+          Questions: result
+        })
+      }))
+    }
+    req.app.locals.currentUserID = current_user
   } else {
-    console.log('no current active user')
+    console.log('no current user')
     res.redirect('login')
   }
-
-  var topic = req._parsedOriginalUrl.query
-  var query = {
-    language: topic
-  }
-
-  if(topic == null) {
-    console.log('error...')
-    res.redirect('/')
-  } else {
-    Quiz.aggregate([
-      { $match: query},
-      { $sample: { size: 10 }}
-    ]).then((result => {
-      grade_quiz = result
-      res.render('quiz', {
-        Title: 'Quiz!',
-        Questions: result
-      })
-    }))
-  }
-  req.app.locals.currentUserID = active_user
 });
 
 
@@ -133,19 +132,19 @@ router.get('/grade', function(req, res) {
 router.get('/add_new', function(req, res) {
 
   const new_question = new Quiz({
-    topic: 'Core C++',
-    language: 'C++',
-    question: 'Runtime polymorphism is done by using what?',
+    topic: 'Core Java',
+    language: `Java`,
+    question: `Which of the following is advantages of packages?`,
     choices: [
-      'Function overloading',
-      'Virtual classes',
-      'Virtual functions',
-      'Friend function'
+      `Packages avoid name clashes`,
+      `Classes, even though they are visible outside their package, can have fields visible to packages only`,
+      `We can have hidden classes that are used by the packages, but not visible outside.`,
+      `All of the above`,
     ],
-    answer: 'Virtual functions',
+    answer: `All of the above`,
     attempts: 0,
     correct: 0,
-    explanation: 'Virtual functions gives the ability to override the functionality of base class into the derived class, achieving dynamic/runtime polymorphism.'
+    explanation: `Java package is used to categorize the classes and interfaces so that they can be easily maintained, and it provides access protection.`
   })
 
   new_question.save().then((result) => {
