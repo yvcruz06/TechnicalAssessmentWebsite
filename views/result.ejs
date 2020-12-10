@@ -19,17 +19,28 @@
         Result from previous attempted quizzes
     </h3>
     <div class="row justify-content-center" style="margin-top: 3em;">
-        <div class="col">
+        <div class="col-11">
             <canvas id="chart" width="300" height="100"></canvas>
         </div>
     </div>
+
+    <div style="margin-top: 3em;">
+        <div>
+            <h3>
+                Test score average: <%= average.toFixed(2) %>
+            </h3>
+        </div>
+    </div>
+
+
+
     <p style="margin-top: 2em;">
         <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          Take Another Quiz
+            Take Another Quiz
         </button>
         <button id='home' type="button" class="btn btn-primary"> Go Home </button>
-      </p>
-      <div class="collapse" id="collapseExample">
+    </p>
+    <div class="collapse" id="collapseExample">
         <div class="card card-body bg-dark">
             <% for (let i = 0; i < options.length; i++) { %>
             <button class="btn">
@@ -39,8 +50,7 @@
             </button>
             <% } %>
         </div>
-      </div>
-
+    </div>
 
 </body>
 <script>
@@ -58,11 +68,24 @@
         const data = '<%- Data %>'.split(',')
         const language = '<%- Lang %>'.split(',')
 
+        console.log('label', label)
+
+        var temp = []
+        language.forEach(element => {
+            temp.push(element.concat(': '))
+        })
+
+        let length = Math.min(language.length, label.length)
+        var new_label = []
+        for(var i = 0; i < length; i++) {
+            new_label.push(temp[i].concat(label[i]))
+        }
+
         var canvas = $('#chart')
         var my_chart = new Chart(canvas, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: label,
+                labels: new_label,
                 datasets: [{
                     label: 'Score',
                     backgroundColor: "rgba(20,140,110, 0.2)",
@@ -70,12 +93,16 @@
                     borderWidth: 2,
                     hoverBackgroundColor: "rgba(20,140,110, 0.4)",
                     hoverBorderColor: "rgba(20,140,110, 0.1)",
-                    data: data
+                    data: data,
                 }]
             },
             options : {
                 scales: {
                     yAxes: [{
+                        ticks: {
+                            max: 100,
+                            min: 0,
+                        },
                         scaleLabel: {
                             display: true,
                             labelString: 'Score (out of 100)'
@@ -119,4 +146,4 @@
         // }
     })
 </script>
-</html>
+<%- include('partials/footer.ejs') %>

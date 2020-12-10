@@ -68,6 +68,7 @@ var quiz_router = require('./routes/quiz');
 var result_router = require('./routes/result');
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
+var logoutRouter = require('./routes/logout');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -76,6 +77,7 @@ app.use('/result', result_router);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/question', questionsRoutes);
+app.use('/logout', logoutRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
