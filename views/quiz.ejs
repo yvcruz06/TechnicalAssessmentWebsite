@@ -113,12 +113,18 @@
     <button id='submit' type="button" class="btn btn-info" style="margin-top: 3em;">Submit</button>
     <button id='home' type="button" class="btn btn-light" style="margin-top: 3em;"> Go Home </button>
 
+    <button id="result" class="btn btn-primary" style="margin-top: 3em;">
+        See Results Page
+    </button>
 
     <h3 id='score' style="margin-top: 2em;">
     </h3>
 
+
     <script>
         $(document).ready(function() {
+            $('#result').hide()
+
             $('.carousel').carousel({
                 interval: 3600000,
                 pause: 'hover',
@@ -131,7 +137,6 @@
 
             $('#submit').click(function() {
 
-                // uncomment
                 $(this).prop('disabled', true)
 
                 var answer_array = []
@@ -148,6 +153,7 @@
                     },
 
                     success: function(result, status) {
+                        $('#result').show()
                         $('#score').html(`Result: ${result.score}%`)
 
                         for(var i = 0; i < result.feedback.length; i++) {
@@ -155,6 +161,10 @@
                         }
                     }
                 })
+            })
+
+            $('#result').click(function() {
+                location.href = '/result'
             })
         })
     </script>

@@ -6,11 +6,10 @@ const Quiz = require('../models/quiz');
 
 // TODO: List all the available pages.
 router.get('/', async (req, res) => {
-  activeUser(req);
   const questions = await getAllQuestions();
 
-  res.render('allQuestions', { 
-    Questions: questions 
+  res.render('allQuestions', {
+    Questions: questions
   });
 
 });
@@ -25,11 +24,11 @@ router.get('/create', async (req, res) => {
   const languages = await getLanguages();
   const choices = ["A", "B", "C", "D"]
 
-  res.render('newQuestion', { 
+  res.render('newQuestion', {
     title: 'Sign Up',
     Choices: choices,
     CurrentTopics: topics,
-    CurrentLangs: languages 
+    CurrentLangs: languages
   });
 });
 
@@ -80,7 +79,7 @@ router.get('/retrieve/:id', (req, res) => {
  */
 async function getAllQuestions() {
   let list = [];
-  
+
   await Quiz.find({}, '-__v -createdAt -updatedAt -choices -answer -explanation')
   .exec()
   .then((result) => {
@@ -91,7 +90,7 @@ async function getAllQuestions() {
   }).catch((error) => {
     console.log(error);
   });
-  
+
   return list;
 }
 
@@ -101,7 +100,7 @@ async function getAllQuestions() {
  */
 async function getTopics() {
   let list = [];
-  
+
   await Quiz.find({}, '-_id topic')
   .distinct('topic')
   .exec()
@@ -112,7 +111,7 @@ async function getTopics() {
   }).catch((error) => {
     console.log(error);
   });
-  
+
   return list;
 }
 
@@ -122,7 +121,7 @@ async function getTopics() {
  */
 async function getLanguages() {
   let list = [];
-  
+
   await Quiz.find({}, '-_id language')
   .distinct('language')
   .exec()
@@ -133,17 +132,17 @@ async function getLanguages() {
   }).catch((error) => {
     console.log(error);
   });
- 
+
   return list;
 }
 
 /**
  * This was used for learning purposes!!! Will be deleted later.
- * 
+ *
  * Allows to get a list of unique topics based on all questions
  */
 router.get('/topics', (req,res) => {
-  
+
   Quiz.find({}, '-_id topic')
   .distinct('topic')
   .exec()
@@ -158,7 +157,7 @@ router.get('/topics', (req,res) => {
 
 /**
  * This was used for learning purposes!!! Will be deleted later.
- * 
+ *
  * Allows to get a list of unique languages based on all questions
  */
 router.get('/languages', (req,res) => {
