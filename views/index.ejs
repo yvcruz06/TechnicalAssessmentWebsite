@@ -2,16 +2,22 @@
   <body>
     <div class="content" id="mainTimeSection">
       <form action="/" >
-        <label for="timer">Time Amount : </label><br><br>
-        <select name="timer" id="timer">
-          <option value="2">2 minutes</option>
-          <option value="5">5 minutes</option>
-          <option value="10">10 minutes</option>
-          <option value="20">20 minutes</option>
+        <label for="timer">Select language to do quiz:</label><br><br>
+        <select name="timer" id="language">
+          <% for( let i = 0; i < Option.length; i++ ) { %>
+            <option><%- Option[i] %></option>
+          <% } %>
         </select> <br><br>
         <input class="start-btn" type="submit" value="Start Quiz!">
       </form>
     </div>
   </body>
-
-<%- include('partials/footer.ejs') %> 
+  <script>
+    $(document).ready(function() {
+      $('.start-btn').click(function(e) {
+        e.preventDefault()
+        window.location.href = 'quiz?' + $('#language').val()
+      })
+    })
+  </script>
+<%- include('partials/footer.ejs') %>
