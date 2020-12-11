@@ -6,10 +6,12 @@ const Quiz = require('../models/quiz');
 
 // TODO: List all the available pages.
 router.get('/', async (req, res) => {
-  if (active.admin == req.app.locals.currentUserID || true) {
+  if (active.admin == req.app.locals.currentUserID) {
     const questions = await getAllQuestions();
 
-    res.render('allQuestions', { 
+    res.render('allQuestions', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin, 
       Questions: questions 
     });
   } else {
@@ -25,7 +27,8 @@ router.get('/create', async (req, res) => {
   const choices = ["A", "B", "C", "D"];
 
   res.render('newQuestion', { 
-    title: 'New Question',
+    User: req.app.locals.user,
+    Admin: req.app.locals.admin,
     Choices: choices,
     CurrentTopics: topics,
     CurrentLangs: languages
@@ -56,7 +59,9 @@ router.post('/create/new', async (req, res) => {
 
   newQuestion.save()
   .then((result) => {
-    res.redirect('/question/create');
+    if (result != null) {
+      res.redirect('/question');
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -73,7 +78,8 @@ router.post('/edit', async (req, res) => {
   console.log(question)
 
   res.render('editQuestion', {
-    title: 'Edit Question',
+    User: req.app.locals.user,
+    Admin: req.app.locals.admin,
     Choices: choices,
     CurrentTopics: topics,
     CurrentLangs: languages,
@@ -96,7 +102,8 @@ router.post('/delete', async (req, res) => {
   const question = await getQuestion(req.body.item);
 
   res.render('deleteQuestion', {
-    title: 'Delete Question',
+    User: req.app.locals.user,
+    Admin: req.app.locals.admin,
     Question: question
   });
 
