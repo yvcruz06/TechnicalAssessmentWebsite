@@ -3,7 +3,6 @@ var router = express.Router();
 
 const Result = require('../models/result')
 const Quiz = require('../models/quiz');
-const { attempt } = require('bluebird');
 
 
 router.get('/', async function(req, res) {
@@ -63,11 +62,19 @@ router.get('/', async function(req, res) {
 
             req.app.locals.currentUserID = current_user
         } else {
-            res.redirect('/login')
+            res.render('login', {
+                User: req.app.locals.user,
+                Admin: req.app.locals.admin,
+                loginError: true
+              });
         }
     } else {
         console.log('no current user')
-        res.redirect('login')
+        res.render('login', {
+            User: req.app.locals.user,
+            Admin: req.app.locals.admin,
+            loginError: true
+          });
     }
 })
 

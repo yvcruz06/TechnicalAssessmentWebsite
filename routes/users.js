@@ -1,23 +1,33 @@
 var express = require('express');
 var router = express.Router();
-
 const User = require('../models/user');
+
 var userInfo;
 
 /* GET users listing. */
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
   let current_user = req.app.locals.currentUserID;
 
   if (current_user) {
     userInfo = await getInfo(current_user);
-    res.render('users',{user: userInfo, update: false, passMatch: true});
+    res.render('users', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      user: userInfo, 
+      update: false, 
+      passMatch: true
+    });
   }
   else {
-    res.render('login',{loginError: false});
+    res.render('login', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      loginError: false
+    });
   }
 });
 
-router.post('/', async(req, res) => {
+router.post('/', async (req, res) => {
   let current_user = req.app.locals.currentUserID;
 
   var updatePass = req.body.updatePass;
@@ -26,14 +36,30 @@ router.post('/', async(req, res) => {
   if (current_user){
     if (updatePass == confirmNew) {
       await User.updateOne({_id: current_user},{$set: {password: updatePass}})
-      res.render('users',{user: userInfo, update: true, passMatch: true});
+      res.render('users', {
+        User: req.app.locals.user,
+        Admin: req.app.locals.admin,
+        user: userInfo, 
+        update: true, 
+        passMatch: true
+      });
     }
     else {
-      res.render('users',{user: userInfo, update: false, passMatch: false});
+      res.render('users', {
+        User: req.app.locals.user,
+        Admin: req.app.locals.admin,
+        user: userInfo, 
+        update: false, 
+        passMatch: false
+      });
     }
   }
   else {
-    res.render('login',{loginError: false});
+    res.render('login', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      loginError: false
+    });
   }
 });
 

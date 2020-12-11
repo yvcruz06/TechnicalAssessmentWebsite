@@ -1,31 +1,31 @@
 var express = require('express');
 var router = express.Router();
-
-// Model from our Database
+const active = require("./extensions/activeUser");
+const queries = require("./extensions/queries");
 const Quiz = require('../models/quiz');
 
 // TODO: List all the available pages.
 router.get('/', async (req, res) => {
-  const questions = await getAllQuestions();
+  if (active.admin == req.app.locals.currentUserID || true) {
+    const questions = await getAllQuestions();
 
-  res.render('allQuestions', {
-    Questions: questions
-  });
+    res.render('allQuestions', { 
+      Questions: questions 
+    });
+  } else {
+    res.redirect('/');
+  }
 
-});
-
-router.delete('/delete/:id', async (req, res) => {
-  console.log(req.body);
 });
 
 // Create a question page.
 router.get('/create', async (req, res) => {
   const topics = await getTopics();
-  const languages = await getLanguages();
-  const choices = ["A", "B", "C", "D"]
+  const languages = await queries.getLanguages();
+  const choices = ["A", "B", "C", "D"];
 
-  res.render('newQuestion', {
-    title: 'Sign Up',
+  res.render('newQuestion', { 
+    title: 'New Question',
     Choices: choices,
     CurrentTopics: topics,
     CurrentLangs: languages
@@ -33,8 +33,6 @@ router.get('/create', async (req, res) => {
 });
 
 router.post('/create/new', async (req, res) => {
-  console.log(req.body);
-
   if (req.body.language == "new") {
     req.body.language = req.body.newLanguage;
   }
@@ -43,23 +41,21 @@ router.post('/create/new', async (req, res) => {
     req.body.topic = req.body.newTopic;
   }
 
+  let list = [req.body.choiceA, req.body.choiceB, req.body.choiceC, req.body.choiceD];
+
   const newQuestion = new Quiz({
     topic: req.body.topic,
     language: req.body.language,
     question: req.body.question,
-    choices: [req.body.choiceA, req.body.choiceB, req.body.choiceC, req.body.choiceD],
-    answer: req.body.answer,
+    choices: list,
+    answer: list[req.body.answer],
     explanation: req.body.explanation,
     attempts: 0,
     correct: 0
   });
 
-  // For testing, make sure to comment the save query
-  // console.log(req.body.language);
-  // console.log(req.body.topic);
   newQuestion.save()
   .then((result) => {
-    console.log("Added new question");
     res.redirect('/question/create');
   })
   .catch((error) => {
@@ -68,9 +64,49 @@ router.post('/create/new', async (req, res) => {
 
 });
 
-router.get('/retrieve/:id', (req, res) => {
-  console.log("Hello there");
+// Edit a question page.
+router.post('/edit', async (req, res) => {
+  const topics = await getTopics();
+  const languages = await queries.getLanguages();
+  const choices = ["A", "B", "C", "D"];
+  const question = await getQuestion(req.body.quest);
+  console.log(question)
+
+  res.render('editQuestion', {
+    title: 'Edit Question',
+    Choices: choices,
+    CurrentTopics: topics,
+    CurrentLangs: languages,
+    Question: question
+  });
+
+});
+
+router.put('/edit/:id', async (req, res) => {
   console.log(req.body);
+
+  if (updateQuestion(req.body)) {
+    res.redirect('/question');
+  }
+
+})
+
+// Delete a question page.
+router.post('/delete', async (req, res) => {
+  const question = await getQuestion(req.body.item);
+
+  res.render('deleteQuestion', {
+    title: 'Delete Question',
+    Question: question
+  });
+
+});
+
+router.delete('/delete/:id', async (req,res) => {
+  if (deleteQuestion(req.body.id)) {
+    res.redirect('/question');
+  }
+
 })
 
 /**
@@ -86,7 +122,6 @@ async function getAllQuestions() {
     if (result != null) {
       list = result;
     }
-    // console.log(result);
   }).catch((error) => {
     console.log(error);
   });
@@ -116,14 +151,13 @@ async function getTopics() {
 }
 
 /**
- * Returns a list of unique languages based on all questions
+ * Returns the specific question
  * or an empty list
  */
-async function getLanguages() {
+async function getQuestion(id) {
   let list = [];
-
-  await Quiz.find({}, '-_id language')
-  .distinct('language')
+  
+  await Quiz.findById(id)
   .exec()
   .then((result) => {
     if (result != null) {
@@ -132,51 +166,56 @@ async function getLanguages() {
   }).catch((error) => {
     console.log(error);
   });
-
+ 
   return list;
 }
 
 /**
- * This was used for learning purposes!!! Will be deleted later.
- *
- * Allows to get a list of unique topics based on all questions
+ * Returns true if question is updated
  */
-router.get('/topics', (req,res) => {
-
-  Quiz.find({}, '-_id topic')
-  .distinct('topic')
+async function updateQuestion(body) {
+  let questUpdated = false;
+  let list = [body.choiceA, body.choiceB, body.choiceC, body.choiceD];
+  
+  await Quiz.findByIdAndUpdate(body.id, {
+    topic: body.topic,
+    language: body.language,
+    question: body.question,
+    choices: list,
+    answer: list[body.answer],
+    explanation: body.explanation,
+    attempts: 0,
+    correct: 0
+  })
   .exec()
   .then((result) => {
-    console.log(result);
-    res.send(result);
+    if (result != null) {
+      questUpdated = true;
+    }
   }).catch((error) => {
     console.log(error);
   });
-
-});
+  
+  return questUpdated;
+}
 
 /**
- * This was used for learning purposes!!! Will be deleted later.
- *
- * Allows to get a list of unique languages based on all questions
+ * Returns true if the question is deleted
  */
-router.get('/languages', (req,res) => {
-  Quiz.find({}, '-_id language')
-  .distinct('language')
+async function deleteQuestion(id) {
+  let isDeleted = false;
+  
+  await Quiz.findByIdAndDelete(id)
   .exec()
   .then((result) => {
-    console.log(result);
-    res.send(result);
+    if (result != null) {
+      isDeleted = true;
+    }
   }).catch((error) => {
     console.log(error);
   });
-});
-
-// TODO: Edit a question page.
-router.get('/edit', (req, res) => {
-  res.render('editQuestion', { title: 'Sign Up' });
-});
-
-
+ 
+  return isDeleted;
+}
 
 module.exports = router;

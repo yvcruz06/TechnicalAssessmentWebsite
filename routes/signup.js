@@ -1,15 +1,33 @@
 var express = require('express');
 var router = express.Router();
+const active = require("./extensions/activeUser");
+const queries = require("./extensions/queries");
 
 // Model from our Database
 const User = require('../models/user');
 
 
-router.get('/', function(req, res, next) {
-  res.render('signup', {signUpError: false, dontMatch : false});
+router.get('/', async (req, res) => {
+  active.activeUser(req);
+  let current_user = req.app.locals.currentUserID
+  if (current_user == "") {
+    res.render('signup', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      signUpError: false, 
+      dontMatch : false
+    });
+  } else {
+    res.render('home', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      Option: await queries.getLanguages()
+    });
+  }
+
 });
 
-router.post('/', async(req, res) => {
+router.post('/', async (req, res) => {
   
   var fname = req.body.fname;
   var lname = req.body.lname;
@@ -33,16 +51,30 @@ router.post('/', async(req, res) => {
         // save user to db, redirect to login
         newUser.save()
         .then((result) => {
-          res.redirect('/login');
+          res.render('login', {
+            User: req.app.locals.user,
+            Admin: req.app.locals.admin,
+            loginError: false
+          });
         })
         .catch((error) => {
           console.log(error);
         });                
       }else {  //user exists   
-        res.render('signup', {signUpError: true, dontMatch: false});
+        res.render('signup', {
+          User: req.app.locals.user,
+          Admin: req.app.locals.admin,
+          signUpError: true, 
+          dontMatch: false
+        });
       }       
   }else { //passwords do not match
-      res.render('signup', {signUpError: false, dontMatch: true});
+      res.render('signup', {
+        User: req.app.locals.user,
+        Admin: req.app.locals.admin,
+        signUpError: false, 
+        dontMatch: true
+      });
   }
 
 });

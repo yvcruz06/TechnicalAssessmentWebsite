@@ -57,14 +57,13 @@
                     <% CurrentLangs.forEach(function(lang) { %>
                         <option value="<%= lang %>"><%= lang %></option>
                     <% }); %> 
-                    
                 </select>
             </div>
             <div id="addLanguage" style="display: none;">
                 <br>
                 <label>Please enter the new Language! </label>
                 <br>
-                <textarea id="newLanguage" name="newLanguage" rows="1" cols="30" maxlength="20" placeholder="Enter answer A..."></textarea>
+                <textarea id="newLanguage" name="newLanguage" rows="1" cols="30" maxlength="20" placeholder="Enter new language..."></textarea>
                 <br>
                 <label>(limit 20 characters)</label>
             </div>
@@ -84,7 +83,7 @@
                 <br>
                 <label>Please enter the new Topic!</label>
                 <br>
-                <textarea id="newTopic" name="newTopic" rows="1" cols="30" maxlength="20" placeholder="Enter answer A..."></textarea>
+                <textarea id="newTopic" name="newTopic" rows="1" cols="30" maxlength="20" placeholder="Enter new topic..."></textarea>
                 <br>
                 <label>(limit 20 characters)</label>
             </div>
@@ -115,12 +114,14 @@
                 </div>
                 <br>
             <% }); %>
+            <% var place = 0 %>
             <div>
                 <label>Please select the answer choice:</label>
                 <br>
                 <% Choices.forEach(function(choice) { %>
-                    <input type="radio" id="<%= choice %>" name="answer" value="<%= choice %>" required>
+                    <input type="radio" id="<%= choice %>" name="answer" value="<%= place %>" required>
                     <label for="<%= choice %>">Answer <%= choice %></label><br>
+                    <% place += 1 %>
                 <% }); %>
             </div>
             <br>
