@@ -1,0 +1,57 @@
+<%- include('partials/header.ejs') %>
+    </head>
+    <body>
+        <div>
+            <h1>Delete This Question?</h1>
+            <label>Go Back(temporary)</label>
+            <a href="/question">
+                <button>Cancel</button>
+             </a>
+             <br><br>
+        </div>
+        <div>
+            <label>Language: <%= Question.language %></label>
+        </div>
+        <br>
+        <div>
+            <label>Topic: <%= Question.topic %></label>
+            <br>
+        </div>
+        <br>
+        <div>
+            <label>Question:</label>
+            <br>
+            <label class="longText"><%= Question.question %></label>
+        </div>    
+        <br>
+        <div>
+            <label>Explanation!</label>
+            <br>
+            <label class="longText"><%= Question.explanation %></label>
+        </div>
+        <br>
+        <div>
+            <br>
+            <label>Choices:</label>
+            <br>
+            <label><%= Question.choices[0] %></label><br>
+            <label><%= Question.choices[1] %></label><br>
+            <label><%= Question.choices[2] %></label><br>
+            <label><%= Question.choices[3] %></label><br>
+        </div>
+        <br>
+        <div>
+            <label>Answer:</label>
+            <br>
+            <label><%= Question.answer %></label>
+        </div>
+        <br>
+        <form action="/question/delete/<%= Question._id %>?_method=DELETE" method="POST">
+            <input type="hidden" name="_METHOD" value="DELETE">
+            <input type="hidden" name="id" value="<%= Question._id %>">
+            <div>
+                <button>Delete</button>
+            </div>
+        </form>
+    </body>
+</html>

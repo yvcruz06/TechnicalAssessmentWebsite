@@ -1,16 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
-// Model from our Database
-const User = require('../models/user');
-
 router.get("/", function(req, res){
   if (req.app.locals.currentUserID != "") {
     req.app.locals.currentUserID = "";
+    req.app.locals.user = false;
+    req.app.locals.admin = false;
     req.session.destroy();
-    res.redirect('/');
-  } else {
-    res.redirect('login');
+    res.render('welcome', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin
+    });
   }
 }); // Log the user out
 

@@ -1,14 +1,13 @@
-const { attempt } = require('bluebird');
 var express = require('express');
-const { ConnectionBase } = require('mongoose');
 var router = express.Router();
+const queries = require("./extensions/queries");
 
 // quiz model
 const Quiz = require('../models/quiz')
 const Result = require('../models/result')
 var grade_quiz = null
 
-router.get('/', function(req, res) {
+router.get('/', async (req, res) => {
   let current_user = req.app.locals.currentUserID
   if(current_user) {
     console.log('there is a user', current_user)
@@ -18,7 +17,11 @@ router.get('/', function(req, res) {
     }
 
     if(topic == null) {
-      res.redirect('/')
+      res.render('home', {
+        User: req.app.locals.user,
+        Admin: req.app.locals.admin,
+        Option: await queries.getLanguages()
+      });
     } else {
       Quiz.aggregate([
         { $match: query},
@@ -33,12 +36,16 @@ router.get('/', function(req, res) {
     }
     req.app.locals.currentUserID = current_user
   } else {
-    res.redirect('login')
+    res.render('login', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      loginError: true
+    });
   }
 });
 
 
-router.get('/grade', function(req, res) {
+router.get('/grade', async (req, res) => {
 
   let score = 0
   var feedback = []
@@ -116,8 +123,12 @@ router.get('/grade', function(req, res) {
 
     grade_quiz = null
   } else {
-    console.log('something wrong herer')
-    res.redirect('/')
+    console.log('something wrong here')
+    res.render('home', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      Option: await queries.getLanguages()
+    });
   }
 })
 

@@ -10,6 +10,8 @@ const app = express();
 // Session for Logged in Users
 var session = require('express-session');
 app.locals.currentUserID = "";
+app.locals.user = false;
+app.locals.admin = false;
 
 app.use(session({
   secret: "Crazy Green",
@@ -61,7 +63,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-var indexRouter = require('./routes/index');
+var welcomeRouter = require('./routes/welcome');
+var homeRouter = require('./routes/home');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var quiz_router = require('./routes/quiz');
@@ -70,7 +73,8 @@ var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
 var logoutRouter = require('./routes/logout');
 
-app.use('/', indexRouter);
+app.use('/', welcomeRouter);
+app.use('/home', homeRouter);
 app.use('/users', usersRouter);
 app.use('/quiz', quiz_router);
 app.use('/result', result_router);

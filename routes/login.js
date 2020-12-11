@@ -1,12 +1,28 @@
 var express = require('express');
 var router = express.Router();
+const active = require("./extensions/activeUser");
+const queries = require("./extensions/queries");
 
 // Model from our Database
 const User = require('../models/user');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('login', {loginError: false});
+router.get('/', async (req, res) => {
+  active.activeUser(req);
+  let current_user = req.app.locals.currentUserID
+  if (current_user == "") {
+    res.render('login', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      loginError: false
+    });
+  } else {
+    res.render('home', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      Option: await queries.getLanguages()
+    });  
+  }
+  
 });
 
 router.post('/', async (req, res) => {  
@@ -17,10 +33,18 @@ router.post('/', async (req, res) => {
 
   if (userExist) {
     //access DB to see if username is taken
-    res.redirect('/');   
+    res.render('home', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      Option: await queries.getLanguages()
+    });   
   }else {  
-    //user does not exists   
-    res.render('login', {loginError: true});
+    //user does not exists
+    res.render('login', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      loginError: true
+    });
   } 
 });
 
@@ -32,7 +56,13 @@ async function getUser(req, user, pass) {
   .then((result) => {
     if (result != null) {
       req.app.locals.currentUserID = result.id;
+      req.app.locals.user = true;
       req.session.authenticated = true;
+
+      if (active.admin == req.app.locals.currentUserID) {
+        req.app.locals.admin = true;
+      }
+
       userFound = true;
     }
   }).catch((error) => {
