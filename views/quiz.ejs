@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-center" style="margin-bottom: 2em; margin-top: 2em;">
-                        <div class="col-4">
+                        <div class="col-6">
                             <!-- load choices-->
                             <select class="form-control" id='q<%= 1 %>'>
                                 <option selected > Select... </option>
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="row justify-content-center" style="margin-bottom: 2em; margin-top: 2em;">
-                        <div class="col-4">
+                        <div class="col-6">
                             <!-- load choices-->
                             <select class="form-control" id='q<%= i + 1 %>'>
                                 <option selected > Select... </option>
@@ -157,7 +157,7 @@
                         $('#score').html(`Result: ${result.score}%`)
 
                         for(var i = 0; i < result.feedback.length; i++) {
-                            $(`#feedback${i + 1}`).html(result.feedback[i])
+                            $(`#feedback${i + 1}`).html('Explanation: ' + result.feedback[i])
                         }
                     }
                 })

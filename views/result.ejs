@@ -27,16 +27,14 @@
     <div style="margin-top: 3em;">
         <div>
             <h3>
-                Test score average: <%= average.toFixed(2) %>
+                Average Score: <%= average.toFixed(2) %>
             </h3>
         </div>
     </div>
 
-
-
     <p style="margin-top: 2em;">
-        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Take Another Quiz
+        <button id='quiz' class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Take A Quiz
         </button>
         <button id='home' type="button" class="btn btn-primary"> Go Home </button>
     </p>
@@ -44,7 +42,7 @@
         <div class="card card-body bg-dark">
             <% for (let i = 0; i < options.length; i++) { %>
             <button class="btn">
-                <a href="/quiz?<%= options[i ]%>" style="color: currentColor">
+                <a href="/quiz?<%= options[i]%>" style="color: currentColor">
                     <%- options[i] %>
                 </a>
             </button>
@@ -52,13 +50,35 @@
         </div>
     </div>
 
+    <div style="margin-top: 5em; margin-bottom: 5em;">
+        <h4 style="margin-bottom: 2em;">
+            Quiz stats from ALL users
+        </h4>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Language</th>
+                    <th scope="col">Total # of questions attempted</th>
+                    <th scope="col">Total # of questions correct</th>
+                    <th scope="col">Average # of questions correct in quiz</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let [key, value] of Totals.entries()) { %>
+                    <tr>
+                        <th scope="row"><%- key %></th>
+                        <td><%- value.attempts %></td>
+                        <td><%- value.correct %></td>
+                        <td><%- (value.attempts / value.correct).toFixed(2) %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 <script>
     $(document).ready(function() {
-
-        if('<%= options.length %>' < 1) {
-            console.log('something went wrong in EJS script')
-        }
 
         $('#home').click(function() {
             window.location.href = '/'
@@ -67,8 +87,6 @@
         const label = '<%- Label %>'.split(',')
         const data = '<%- Data %>'.split(',')
         const language = '<%- Lang %>'.split(',')
-
-        console.log('label', label)
 
         var temp = []
         language.forEach(element => {
