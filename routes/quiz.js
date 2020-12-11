@@ -7,7 +7,7 @@ const Quiz = require('../models/quiz')
 const Result = require('../models/result')
 var grade_quiz = null
 
-router.get('/', function(req, res) {
+router.get('/', async (req, res) => {
   let current_user = req.app.locals.currentUserID
   if(current_user) {
     console.log('there is a user', current_user)
@@ -17,7 +17,11 @@ router.get('/', function(req, res) {
     }
 
     if(topic == null) {
-      res.redirect('/')
+      res.render('home', {
+        User: req.app.locals.user,
+        Admin: req.app.locals.admin,
+        Option: await queries.getLanguages()
+      });
     } else {
       Quiz.aggregate([
         { $match: query},
