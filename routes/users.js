@@ -17,7 +17,7 @@ router.get('/', async(req, res) => {
   }
 });
 
-router.post('/', async(req, res) => { 
+router.post('/', async(req, res) => {
   let current_user = req.app.locals.currentUserID;
 
   var updatePass = req.body.updatePass;
@@ -34,7 +34,7 @@ router.post('/', async(req, res) => {
   }
   else {
     res.render('login',{loginError: false});
-  }  
+  }
 });
 
 //function finds user info in DB by using  ID
