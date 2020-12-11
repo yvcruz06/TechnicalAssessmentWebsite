@@ -1,7 +1,8 @@
 <%- include('partials/header.ejs') %>
+
   <body>
     <div class="content" id="mainTimeSection">
-      <form action="/" >
+      <form action="/">
         <label for="timer">Time Amount : </label><br><br>
         <select name="timer" id="timer">
           <option value="2">2 minutes</option>
@@ -12,6 +13,6 @@
         <input class="start-btn" type="submit" value="Start Quiz!">
       </form>
     </div>
+    <%- include('partials/footer.ejs') %>
   </body>
-
-<%- include('partials/footer.ejs') %> 
+</html>

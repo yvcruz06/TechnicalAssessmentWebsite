@@ -5,7 +5,7 @@ const active = require("./activeUser");
 /* GET home page. */
 router.get('/', (req, res) =>  {
   active.activeUser(req);
-  res.render('index');
+  res.render('home');
 });
 
 module.exports = router;

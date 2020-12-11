@@ -13,8 +13,6 @@
         <script>
             $(document).ready(function() {
                 $(".myBtn").on('click', function() {
-                    // $("#myModal").css('display', 'block');
-                    // $(".modal").css('display', 'block');
                     alert($(this).prevAll('.id'));
                     $.ajax({
                         method: "GET",
@@ -24,20 +22,13 @@
                             "id": $(this).prevAll('.id').val()
                         },
                         success: function(result, success) {
-                            $("#authorName").html(`Hello`);
-                            $("#bio").html(`Biography: <br> Hello there`);
-                            $("#gen").html(`Gender: male`);
-                            $('#authorModal').modal("show");
+                            if (result) {
+                                
+                            }
                         }
                     });
 
                 });
-
-                $(".close").on('click', function() {
-                    // $("#myModal").css('display', 'none');
-                    $(".modal").css('display', 'none');
-                });
-
             });
         </script>
     </head>
@@ -66,45 +57,15 @@
                     <th><%= quest.question %></th>
                     <th><%= quest.correct %>/<%= quest.attempts %> = <%= (quest.correct / quest.attempts) * 100 %>%</th>
                     <th>
-                        <button>Edit</button>
-                        <form action="/question/delete/<%= quest._id %>?_method=DELETE" method="POST">
-                            <input type="hidden" name="_METHOD" value="DELETE">
+                        <form action="/question/edit" method="POST">
+                            <button id="quest" class="quest" name="quest" value="<%= quest._id %>">Edit</button>
+                        </form>
+                        <form action="/question/delete" method="POST">
                             <button id="item" class="item" name="item" value="<%= quest._id %>">Delete</button>
                         </form>
-                        <button class="myBtn">Open Modal</button>
-                    </th>
-                    
+                    </th>                    
                 </tr>
             <% }); %>   
         </table>
-
-        <div id="myModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-            </div>
-        </div>
-
-            <!-- Modal -->
-        <div class="modal fade" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><h1 id="authorName"></h1></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <span id="gen"></span>
-                        <p id="bio"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     </body>
 </html>

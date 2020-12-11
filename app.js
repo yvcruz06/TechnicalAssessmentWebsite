@@ -61,6 +61,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
+var homeRouter = require('./routes/home');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
@@ -69,6 +70,7 @@ var result_router = require('./routes/result');
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
 
+app.use('/home', homeRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/quiz', quiz_router);
