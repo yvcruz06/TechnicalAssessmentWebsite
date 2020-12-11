@@ -10,7 +10,6 @@ router.get('/', async function(req, res) {
     let current_user = req.app.locals.currentUserID
 
     if(current_user) {
-        console.log('there is a user', current_user)
         let list = [], attempts = [], correct = []
         await Quiz.find().then((result) => {
             result.forEach(element => {
@@ -64,7 +63,6 @@ router.get('/', async function(req, res) {
 
             req.app.locals.currentUserID = current_user
         } else {
-            console.log('current user is "" ')
             res.redirect('/login')
         }
     } else {
