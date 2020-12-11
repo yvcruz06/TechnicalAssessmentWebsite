@@ -2,18 +2,33 @@
 <html lang="en">
   <head>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <!-- jQuery and JS bundle w/ Popper.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
     <nav class="navigationWrapper">
       <div class="logoWrapper">
         <span class="stylish">Technical</span>
         <span class="logo">Assessment</span>
       </div>
       <ul class="navigation">
-        <li><a class="link" href="/">Home</a></li>
-        <li><a class="link" href="/login">Login</a></li>
-        <li><a class="link" href="/signup">Sign Up</a></li>
-        <li><a class="link" href="/users">Account</a></li>
-        <li><a class="link" href="/">Results</a></li>
-        <li><a class="link" href="/">Log Out</a></li>
+        <% if (User) { %>
+          <li><a class="link" href="/home">Home</a></li>
+          <li><a class="link" href="/users">Account</a></li>
+          <li><a class="link" href="/result">Results</a></li>
+          <li><a class="link" href="/logout">Log Out</a></li>
+          <% if (Admin) { %>
+            <li><a class="link" href="/question">Questions</a></li>
+          <% } %>
+        <% } else { %>
+          <li><a class="link" href="/">Home</a></li>
+          <li><a class="link" href="/login">Login</a></li>
+          <li><a class="link" href="/signup">Sign Up</a></li>
+        <% } %>
+        
+        
+        
       </ul>
     </nav>
   </head>

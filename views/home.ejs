@@ -1,10 +1,26 @@
 <%- include('partials/header.ejs') %>
 
-    <body>
-        <h1 style="color:rgb(194, 194, 194)">Welcome to Technical Assessment!</h1>
-        <div>
-            <img src="img/CodingHomeImage.jpg" alt="CodingHomeImage" width="700" height="500">
-        </div>
-        <%- include('partials/footer.ejs') %> 
-    </body>
+  <body>
+    <div class="content" id="mainTimeSection">
+      <form action="/" >
+        <label for="timer">Select language to do quiz:</label><br><br>
+        <select name="timer" id="language">
+          <% for( let i = 0; i < Option.length; i++ ) { %>
+            <option><%- Option[i] %></option>
+          <% } %>
+        </select> <br><br>
+        <input class="start-btn" type="submit" value="Start Quiz!">
+      </form>
+    </div>
+    <%- include('partials/footer.ejs') %>
+  </body>
+  <script>
+    $(document).ready(function() {
+      $('.start-btn').click(function(e) {
+        e.preventDefault()
+        window.location.href = 'quiz?' + $('#language').val()
+      })
+    })
+  </script>
+  <%- include('partials/footer.ejs') %>
 </html>

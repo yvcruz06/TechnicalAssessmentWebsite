@@ -1,52 +1,47 @@
-const { attempt } = require('bluebird');
 var express = require('express');
-const { ConnectionBase } = require('mongoose');
 var router = express.Router();
+const queries = require("./extensions/queries");
 
 // quiz model
 const Quiz = require('../models/quiz')
 const Result = require('../models/result')
 var grade_quiz = null
 
-
-// it would look like an error if its just
-// localhost:3000/quiz
-// do it like ...:3000/quiz?C++
-// or /quiz?Java
 router.get('/', function(req, res) {
-  let active_user = req.app.locals.currentUserID
-  if(active_user) {
-    console.log('there is a user', active_user)
-  } else {
-    console.log('no current active user')
-    res.redirect('login')
-  }
+  let current_user = req.app.locals.currentUserID
+  if(current_user) {
+    console.log('there is a user', current_user)
+    var topic = req._parsedOriginalUrl.query
+    var query = {
+      language: topic
+    }
 
-  var topic = req._parsedOriginalUrl.query
-  var query = {
-    language: topic
-  }
-
-  if(topic == null) {
-    console.log('error...')
-    res.redirect('/')
+    if(topic == null) {
+      res.redirect('/')
+    } else {
+      Quiz.aggregate([
+        { $match: query},
+        { $sample: { size: 8 }}
+      ]).then((result => {
+        grade_quiz = result
+        res.render('quiz', {
+          Title: 'Quiz!',
+          Questions: result
+        })
+      }))
+    }
+    req.app.locals.currentUserID = current_user
   } else {
-    Quiz.aggregate([
-      { $match: query},
-      { $sample: { size: 10 }}
-    ]).then((result => {
-      grade_quiz = result
-      res.render('quiz', {
-        Title: 'Quiz!',
-        Questions: result
-      })
-    }))
+    res.render('login', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      loginError: true
+    });
   }
-  req.app.locals.currentUserID = active_user
 });
 
 
-router.get('/grade', function(req, res) {
+router.get('/grade', async (req, res) => {
 
   let score = 0
   var feedback = []
@@ -124,34 +119,13 @@ router.get('/grade', function(req, res) {
 
     grade_quiz = null
   } else {
-    console.log('something wrong herer')
-    res.redirect('/')
+    console.log('something wrong here')
+    res.render('home', {
+      User: req.app.locals.user,
+      Admin: req.app.locals.admin,
+      Option: await queries.getLanguages()
+    });
   }
 })
 
-// adding?
-router.get('/add_new', function(req, res) {
-
-  const new_question = new Quiz({
-    topic: 'Core C++',
-    language: 'C++',
-    question: 'Runtime polymorphism is done by using what?',
-    choices: [
-      'Function overloading',
-      'Virtual classes',
-      'Virtual functions',
-      'Friend function'
-    ],
-    answer: 'Virtual functions',
-    attempts: 0,
-    correct: 0,
-    explanation: 'Virtual functions gives the ability to override the functionality of base class into the derived class, achieving dynamic/runtime polymorphism.'
-  })
-
-  new_question.save().then((result) => {
-    res.send('new question added')
-  }).catch((error) => {
-    console.log(error)
-  })
-})
 module.exports = router;

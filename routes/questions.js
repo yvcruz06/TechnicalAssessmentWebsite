@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const active = require("./activeUser");
+const active = require("./extensions/activeUser");
+const queries = require("./extensions/queries");
 const Quiz = require('../models/quiz');
 
 // TODO: List all the available pages.
@@ -20,14 +21,14 @@ router.get('/', async (req, res) => {
 // Create a question page.
 router.get('/create', async (req, res) => {
   const topics = await getTopics();
-  const languages = await getLanguages();
+  const languages = await queries.getLanguages();
   const choices = ["A", "B", "C", "D"];
 
   res.render('newQuestion', { 
     title: 'New Question',
     Choices: choices,
     CurrentTopics: topics,
-    CurrentLangs: languages 
+    CurrentLangs: languages
   });
 });
 
@@ -66,7 +67,7 @@ router.post('/create/new', async (req, res) => {
 // Edit a question page.
 router.post('/edit', async (req, res) => {
   const topics = await getTopics();
-  const languages = await getLanguages();
+  const languages = await queries.getLanguages();
   const choices = ["A", "B", "C", "D"];
   const question = await getQuestion(req.body.quest);
   console.log(question)
@@ -114,7 +115,7 @@ router.delete('/delete/:id', async (req,res) => {
  */
 async function getAllQuestions() {
   let list = [];
-  
+
   await Quiz.find({}, '-__v -createdAt -updatedAt -choices -answer -explanation')
   .exec()
   .then((result) => {
@@ -124,7 +125,7 @@ async function getAllQuestions() {
   }).catch((error) => {
     console.log(error);
   });
-  
+
   return list;
 }
 
@@ -134,7 +135,7 @@ async function getAllQuestions() {
  */
 async function getTopics() {
   let list = [];
-  
+
   await Quiz.find({}, '-_id topic')
   .distinct('topic')
   .exec()
@@ -145,28 +146,7 @@ async function getTopics() {
   }).catch((error) => {
     console.log(error);
   });
-  
-  return list;
-}
 
-/**
- * Returns a list of unique languages based on all questions
- * or an empty list
- */
-async function getLanguages() {
-  let list = [];
-  
-  await Quiz.find({}, '-_id language')
-  .distinct('language')
-  .exec()
-  .then((result) => {
-    if (result != null) {
-      list = result;
-    }
-  }).catch((error) => {
-    console.log(error);
-  });
- 
   return list;
 }
 

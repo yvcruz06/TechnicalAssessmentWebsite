@@ -10,6 +10,8 @@ const app = express();
 // Session for Logged in Users
 var session = require('express-session');
 app.locals.currentUserID = "";
+app.locals.user = false;
+app.locals.admin = false;
 
 app.use(session({
   secret: "Crazy Green",
@@ -61,23 +63,25 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
+var welcomeRouter = require('./routes/welcome');
 var homeRouter = require('./routes/home');
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var quiz_router = require('./routes/quiz');
 var result_router = require('./routes/result');
 var signupRouter = require('./routes/signup');
 var questionsRoutes = require('./routes/questions');
+var logoutRouter = require('./routes/logout');
 
+app.use('/', welcomeRouter);
 app.use('/home', homeRouter);
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/quiz', quiz_router);
 app.use('/result', result_router);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/question', questionsRoutes);
+app.use('/logout', logoutRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
