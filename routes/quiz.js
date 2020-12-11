@@ -8,11 +8,6 @@ const Quiz = require('../models/quiz')
 const Result = require('../models/result')
 var grade_quiz = null
 
-
-// it would look like an error if its just
-// localhost:3000/quiz
-// do it like ...:3000/quiz?C++
-// or /quiz?Java
 router.get('/', function(req, res) {
   let current_user = req.app.locals.currentUserID
   if(current_user) {
@@ -23,7 +18,6 @@ router.get('/', function(req, res) {
     }
 
     if(topic == null) {
-      console.log('error...')
       res.redirect('/')
     } else {
       Quiz.aggregate([
@@ -39,7 +33,6 @@ router.get('/', function(req, res) {
     }
     req.app.locals.currentUserID = current_user
   } else {
-    console.log('no current user')
     res.redirect('login')
   }
 });
@@ -128,29 +121,4 @@ router.get('/grade', function(req, res) {
   }
 })
 
-// adding?
-router.get('/add_new', function(req, res) {
-
-  const new_question = new Quiz({
-    topic: 'Core Java',
-    language: `Java`,
-    question: `Which of the following is advantages of packages?`,
-    choices: [
-      `Packages avoid name clashes`,
-      `Classes, even though they are visible outside their package, can have fields visible to packages only`,
-      `We can have hidden classes that are used by the packages, but not visible outside.`,
-      `All of the above`,
-    ],
-    answer: `All of the above`,
-    attempts: 0,
-    correct: 0,
-    explanation: `Java package is used to categorize the classes and interfaces so that they can be easily maintained, and it provides access protection.`
-  })
-
-  new_question.save().then((result) => {
-    res.send('new question added')
-  }).catch((error) => {
-    console.log(error)
-  })
-})
 module.exports = router;

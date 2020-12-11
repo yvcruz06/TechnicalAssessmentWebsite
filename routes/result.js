@@ -3,24 +3,39 @@ var router = express.Router();
 
 const Result = require('../models/result')
 const Quiz = require('../models/quiz');
+const { attempt } = require('bluebird');
 
 
 router.get('/', async function(req, res) {
     let current_user = req.app.locals.currentUserID
 
-    // delete after finishing results
-    current_user = "5fc94bdf73e92401c8a2d747"
-
-
     if(current_user) {
-        console.log('there is a user', current_user)
-        let list = []
+        let list = [], attempts = [], correct = []
         await Quiz.find().then((result) => {
             result.forEach(element => {
                 list.push(element.language)
+                attempts.push(element.attempts)
+                correct.push(element.correct)
             })
         })
         var options = [...new Set(list)]
+        let totals = new Map()
+        for(var i = 0; i < options.length; i++) {
+            totals.set(options[i], {attempts: 0, correct: 0})
+            for(var j = 0; j < attempts.length; j++) {
+                if(list[j] === options[i]) {
+                    let keys = totals.get(list[j])
+                    if(keys) {
+                        keys.attempts = keys.attempts + attempts[j]
+                        keys.correct = keys.correct + correct[j]
+                    } else {
+                        console.log('some error...')
+                        keys.attempts = keys.attempts + NaN
+                        keys.correct = keys.correct + NaN
+                    }
+                }
+            }
+        }
 
         if(current_user != '') {
             Result.find({ user_id: current_user }).then((result) => {
@@ -39,7 +54,8 @@ router.get('/', async function(req, res) {
                     Data: data,
                     average: average,
                     Lang: language,
-                    options: options
+                    options: options,
+                    Totals: totals
                 })
             }).catch((error) => {
                 console.log(error)
@@ -47,7 +63,6 @@ router.get('/', async function(req, res) {
 
             req.app.locals.currentUserID = current_user
         } else {
-            console.log('current user is "" ')
             res.redirect('/login')
         }
     } else {
