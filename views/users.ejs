@@ -1,26 +1,30 @@
 <%- include('partials/header.ejs') %>
     <body>
-        <h1 style="color:rgb(194, 194, 194)">Account Information</h1><br>
-        <h2><%= user.firstName %> <%= user.lastName %></h2>
-        <h3>@<%= user.username %></h3><br>
-        <h2>Change Password: </h2>
-        <p>Password must be 8 characters or greater</p>
-        <form action="/users" method="POST">
-            <div class="input-label">
-                <label for="updatePass">New Password: <br></label>
-                <input class="input-box" type="password" id="updatePass" name="updatePass" placeholder="New Password" pattern=".{8,}" required>
+        <h1 style="color:rgb(221,221,221)">Account Information</h1><br>
+        <div class="cntnt">
+            <h3>Your Name: <%= user.firstName %> <%= user.lastName %></h3>
+            <h3>Username: @<%= user.username %></h3>
+        </div>
+
+        <hr>    
+
+        <div class="cntnt2">
+            <h3>Change Password: </h3>
+            <h3>Password must be 8 characters or longer</h3>
+          
+            <form action="/users" method="POST">
+                <input class="input-box2" type="password" id="updatePass" name="updatePass" placeholder="New Password" pattern=".{8,}" required>
                 <br>
-                <label for="confirmNew">Re Enter New Password: <br></label> 
-                <input class="input-box" type="password" id="confirmNew" name="confirmNew" placeholder="Re Enter Password" pattern=".{8,}" required>
-                <br>
-            </div><br>
-            <button class="start-btn">Update Password</button>
-        </form>
-        <%if(update){%>
-            <h1 class="centerText" style="color: #222;">Password Updated!</h1>
-            <%}%>
-        <%if(!passMatch){%>
-            <h1 class="centerText" style="color: #222;">Passwords Do Not Match</h1>
-            <%}%>    
+                <input class="input-box2" type="password" id="confirmNew" name="confirmNew" placeholder="ReEnter New Password" pattern=".{8,}" required>
+                <br><br>
+                <button class="start-btn">Update Password</button>
+            </form>
+            <%if(update){%>
+                <h1 class="centerText" style="color: #ea4f4c;">Password Updated!</h1>
+                <%}%>
+            <%if(!passMatch){%>
+                <h1 class="centerText" style="color: #ea4f4c;">Passwords Do Not Match</h1>
+                <%}%> 
+        </div>    
     </body>    
 <%- include('partials/footer.ejs') %> 
