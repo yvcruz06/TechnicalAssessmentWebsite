@@ -1,18 +1,19 @@
 <%- include('partials/header.ejs') %>
-    </head>
-    <body id="loginWindow">
-        <div id="loginSection">
-            <h1>Login</h1>
-            <form action="/login" method="POST">
-                Username: <input name="usernameInput" type="text" class="input-box" id="usernameInput" /><br><br>
-                Password: <input name="passwordInput" type="text" class="input-box" id="passwordInput" /><br><br>
-                <button class="start-btn">Log In!</button>
-                <br>
-                <%if(loginError){%>
-                    <h1 class="centerText" style="color: #222;">Incorrect Username or Password</h1>
-                <%}%>
-            </form>
-        </div>
-        <%- include('partials/footer.ejs') %>
-    </body> 
-</html>  
+</head>
+  <body>
+    <div id="loginSection">
+      <h1 style="color:rgb(221, 221, 221)">Login</h1>
+      <form action="/login" method="POST">
+            <input placeholder="Username" name = "usernameInput" type="text" class="input-box" id="usernameInput"/><br><br>
+            <input placeholder="Password" name = "passwordInput" type="password" class="input-box" id="passwordInput"/><br><br>
+            <button class="start-btn">Log In!</button>
+            <br>
+      </form>
+      <%if(loginError){%>
+        <h1 class="centerText" style="color: #222;">Incorrect Username or Password</h1>
+        <%}%>
+    </div>
+    <%- include('partials/footer.ejs') %>     
+  </body>
+</head>  
+
