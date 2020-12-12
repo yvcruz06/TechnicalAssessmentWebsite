@@ -7,10 +7,7 @@ router.get("/", function(req, res){
     req.app.locals.user = false;
     req.app.locals.admin = false;
     req.session.destroy();
-    res.render('welcome', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin
-    });
+    res.redirect('/');
   }
 }); // Log the user out
 

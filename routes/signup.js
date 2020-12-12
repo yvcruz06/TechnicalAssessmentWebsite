@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const active = require("./extensions/activeUser");
-const queries = require("./extensions/queries");
 
 // Model from our Database
 const User = require('../models/user');
@@ -18,11 +17,7 @@ router.get('/', async (req, res) => {
       dontMatch : false
     });
   } else {
-    res.render('home', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      Option: await queries.getLanguages()
-    });
+    res.redirect('/home');
   }
 
 });
@@ -42,25 +37,20 @@ router.post('/', async (req, res) => {
     password: pass
   });
 
-    
   if (pass == confirmPass) {
     //access DB to see if username is taken
       const userExist = await getUser(user);
 
-      if(userExist == null){      //user is not in db
+      if (userExist == null){      //user is not in db
         // save user to db, redirect to login
         newUser.save()
         .then((result) => {
-          res.render('login', {
-            User: req.app.locals.user,
-            Admin: req.app.locals.admin,
-            loginError: false
-          });
+          res.redirect('/login');
         })
         .catch((error) => {
           console.log(error);
         });                
-      }else {  //user exists   
+      } else {  //user exists   
         res.render('signup', {
           User: req.app.locals.user,
           Admin: req.app.locals.admin,
@@ -68,7 +58,7 @@ router.post('/', async (req, res) => {
           dontMatch: false
         });
       }       
-  }else { //passwords do not match
+  } else { //passwords do not match
       res.render('signup', {
         User: req.app.locals.user,
         Admin: req.app.locals.admin,

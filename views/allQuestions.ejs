@@ -1,11 +1,11 @@
 <%- include('partials/header.ejs') %>
     </head>
     <body>
-        <div>
+        <div id="allQuest">
             <h1>All the Questions</h1>
-            <label>Create A Question!</label>
+            <h3>Create A Question!</h3>
             <a href="/question/create">
-                <button>New Question</button>
+                <button id="newQuest" class="newQuest">New Question</button>
             </a>
             <br><br>
         </div>
@@ -36,4 +36,5 @@
             <% }); %>   
         </table>
     </body>
+    <%- include('partials/footer.ejs') %>
 </html>

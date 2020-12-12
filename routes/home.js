@@ -23,11 +23,7 @@ router.get('/', async (req, res) =>  {
       Option: options
     });
   } else {
-    res.render('login', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      loginError: false
-    });
+    res.redirect('/login');
   }
 
 });
