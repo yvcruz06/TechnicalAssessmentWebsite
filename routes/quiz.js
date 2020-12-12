@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const queries = require("./extensions/queries");
 
 // quiz model
 const Quiz = require('../models/quiz')
@@ -17,11 +16,7 @@ router.get('/', async (req, res) => {
     }
 
     if(topic == null) {
-      res.render('home', {
-        User: req.app.locals.user,
-        Admin: req.app.locals.admin,
-        Option: await queries.getLanguages()
-      });
+      res.redirect('/home');
     } else {
       Quiz.aggregate([
         { $match: query},
@@ -36,11 +31,7 @@ router.get('/', async (req, res) => {
     }
     req.app.locals.currentUserID = current_user
   } else {
-    res.render('login', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      loginError: true
-    });
+    res.redirect('/login');
   }
 });
 
@@ -124,11 +115,7 @@ router.get('/grade', async (req, res) => {
     grade_quiz = null
   } else {
     console.log('something wrong here')
-    res.render('home', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      Option: await queries.getLanguages()
-    });
+    res.redirect('/home');
   }
 })
 

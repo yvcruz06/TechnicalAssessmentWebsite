@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const active = require("./extensions/activeUser");
-const queries = require("./extensions/queries");
 
 // Model from our Database
 const User = require('../models/user');
@@ -16,11 +15,7 @@ router.get('/', async (req, res) => {
       loginError: false
     });
   } else {
-    res.render('home', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      Option: await queries.getLanguages()
-    });  
+    res.redirect('/home');
   }
   
 });
@@ -33,11 +28,7 @@ router.post('/', async (req, res) => {
 
   if (userExist) {
     //access DB to see if username is taken
-    res.render('home', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      Option: await queries.getLanguages()
-    });   
+    res.redirect('/home');  
   }else {  
     //user does not exists
     res.render('login', {

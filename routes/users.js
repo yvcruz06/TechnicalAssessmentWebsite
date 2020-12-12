@@ -19,11 +19,7 @@ router.get('/', async (req, res) => {
     });
   }
   else {
-    res.render('login', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      loginError: false
-    });
+    res.redirect('/login');
   }
 });
 
@@ -55,11 +51,7 @@ router.post('/', async (req, res) => {
     }
   }
   else {
-    res.render('login', {
-      User: req.app.locals.user,
-      Admin: req.app.locals.admin,
-      loginError: false
-    });
+    res.redirect('/login');
   }
 });
 

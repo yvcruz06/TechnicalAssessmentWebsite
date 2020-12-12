@@ -19,6 +19,7 @@
       </div>
       <ul class="navigation">
         <% if (User) { %>
+          <li><a class="link" href="/">Welcome</a></li>
           <li><a class="link" href="/home">Home</a></li>
           <li><a class="link" href="/users">Account</a></li>
           <li><a class="link" href="/result">Results</a></li>
@@ -27,12 +28,9 @@
             <li><a class="link" href="/question">Questions</a></li>
           <% } %>
         <% } else { %>
-          <li><a class="link" href="/">Home</a></li>
+          <li><a class="link" href="/">Welcome</a></li>
           <li><a class="link" href="/login">Login</a></li>
           <li><a class="link" href="/signup">Sign Up</a></li>
         <% } %>
-        
-        
-        
       </ul>
     </nav>

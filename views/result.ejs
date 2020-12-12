@@ -81,7 +81,7 @@
         $(document).ready(function() {
 
             $('#home').click(function() {
-                window.location.href = '/'
+                window.location.href = '/home'
             })
 
             const label = '<%- Label %>'.split(',')
@@ -135,33 +135,6 @@
                     }
                 }
             })
-
-            // function color() {
-            //     var r = Math.floor(Math.random() * 70);
-            //     var g = Math.floor(Math.random() * 255);
-            //     var b = Math.floor(Math.random() * 150);
-            //     return "rgba(" + r + "," + g + "," + b + ", 0.2)";
-            // }
-
-            // function poolColors(length) {
-            //     var pool = []
-            //     for(var i = 0; i < length; i++) {
-            //         pool.push(color())
-            //     }
-            //     return pool
-            // }
-
-            // function update(array, alpha) {
-            //     var updated_array = []
-            //     for(var i = 0; i < array.length; i++) {
-            //         var temp = array[i].split(' ')
-
-            //         temp[1] = temp[1].replace('0.2)', alpha.toString() + ')')
-            //         updated_array.push(temp.join())
-            //     }
-            //     console.log(updated_array)
-            //     return updated_array
-            // }
         })
     </script>
     <%- include('partials/footer.ejs') %>

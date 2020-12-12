@@ -62,19 +62,11 @@ router.get('/', async function(req, res) {
 
             req.app.locals.currentUserID = current_user
         } else {
-            res.render('login', {
-                User: req.app.locals.user,
-                Admin: req.app.locals.admin,
-                loginError: true
-              });
+            res.redirect('/login');
         }
     } else {
         console.log('no current user')
-        res.render('login', {
-            User: req.app.locals.user,
-            Admin: req.app.locals.admin,
-            loginError: true
-          });
+        res.redirect('/login');
     }
 })
 
